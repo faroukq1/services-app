@@ -1,9 +1,3 @@
-// - `GET /api/users`: Retrieve all users. done
-// - `GET /api/users/:id`: Retrieve a specific user by ID. done
-// - `POST /api/users`: Create a new user. done
-// - `PUT /api/users/:id`: Update an existing user by ID.
-// - `DELETE /api/users/:id`: Delete a user by ID.
-
 const pool = require("../database");
 const getUsers = async (req, res) => {
   try {
@@ -62,7 +56,8 @@ const newUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { id, column, newData } = req.body;
+    const id = req.params.id;
+    const { column, newData } = req.body;
     pool.query(`UPDATE users SET ${column}=? WHERE user_id=?`, [newData, id]);
     res.status(200).send("user has been updated");
   } catch (error) {

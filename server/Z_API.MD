@@ -1,10 +1,10 @@
 1. **Users API Endpoints**:
 
-   - `GET /api/users`: Retrieve all users.
-   - `GET /api/users/:id`: Retrieve a specific user by ID.
-   - `POST /api/users`: Create a new user.
-   - `PUT /api/users/:id`: Update an existing user by ID.
-   - `DELETE /api/users/:id`: Delete a user by ID.
+   - `GET /api/users`: Retrieve all users. done
+   - `GET /api/users/:id`: Retrieve a specific user by ID. done
+   - `POST /api/users`: Create a new user. done
+   - `PUT /api/users/:id`: Update an existing user by ID. done
+   - `DELETE /api/users/:id`: Delete a user by ID. done
 
 2. **Services API Endpoints**:
 
