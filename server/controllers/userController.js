@@ -20,40 +20,6 @@ const getUser = async (req, res) => {
   }
 };
 
-const newUser = async (req, res) => {
-  try {
-    const {
-      user_id,
-      user_name,
-      email,
-      user_adress,
-      user_password,
-      full_name,
-      profile_image,
-      phone_number,
-      credit_card_number,
-    } = req.body;
-    pool.query(
-      `INSERT INTO users (user_id,user_name,email, user_adress,user_password,full_name,
-      profile_image,phone_number,credit_card_number) VALUES (?,?,?,?,?,?,?,?,?)`,
-      [
-        user_id,
-        user_name,
-        email,
-        user_adress,
-        user_password,
-        full_name,
-        profile_image,
-        phone_number,
-        credit_card_number,
-      ]
-    );
-    res.status(200).send({ message: "user has been added" });
-  } catch (error) {
-    res.status(500).send({ message: error.message });
-  }
-};
-
 const updateUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -77,7 +43,6 @@ const deleteUser = async (req, res) => {
 module.exports = {
   getUsers,
   getUser,
-  newUser,
   updateUser,
   deleteUser,
 };

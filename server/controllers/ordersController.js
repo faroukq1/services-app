@@ -1,9 +1,3 @@
-// - `GET /api/orders`: Retrieve all orders.
-// - `GET /api/orders/:id`: Retrieve a specific order by ID.
-// - `POST /api/orders`: Create a new order.
-// - `PUT /api/orders/:id`: Update an existing order by ID.
-// - `DELETE /api/orders/:id`: Delete an order by ID.
-
 const pool = require("../database");
 
 const orders = async (req, res) => {
