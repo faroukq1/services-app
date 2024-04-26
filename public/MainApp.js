@@ -3,6 +3,7 @@ import Welcome from "./pages/auth/Welcome";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginPage from "./pages/auth/LoginPage";
+import { StatusBar } from "expo-status-bar";
 const Stack = createNativeStackNavigator();
 
 const MainApp = () => {

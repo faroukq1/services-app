@@ -11,7 +11,7 @@ import React from "react";
 const WelcomePageItem = ({ item }) => {
   const { width, height } = useWindowDimensions();
   return (
-    <View style={[styles.container, { height: height * 0.92, width }]}>
+    <View style={[styles.container, { height: height, width }]}>
       <View style={styles.textContainer}>
         <Text style={styles.mainText}>{item.title}</Text>
         <Text style={styles.subText}>{item.subtitle}</Text>
@@ -32,8 +32,8 @@ const WelcomePageItem = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-evenly",
     alignItems: "center",
+    justifyContent: "center",
   },
   image: {
     flex: 0.7,
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainText: {
-    marginTop: 30,
     fontSize: 40,
     fontWeight: "bold",
     color: "#218D96",
