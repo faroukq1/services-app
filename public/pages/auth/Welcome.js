@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   FlatList,
   StatusBar,
+  Animated,
+  useWindowDimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import WelcomePageItem from "../../component/WelcomePageItem";
 
 welcomeSlider = [
@@ -40,47 +42,85 @@ welcomeSlider = [
     description: `Welcome to services where convenience meets reliability. Get ready to access top-notch services at your fingertips!`,
     image: require("../../assets/working.png"),
   },
+  {
+    id: 5,
+    title: "Let's get started",
+    subtitle: "",
+    description:
+      "Let's get started! Dive into a world of convenience and seamless service solutions right from your fingertips.",
+    image: require("../../assets/start.png"),
+  },
 ];
 const Welcome = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const flatListRef = useRef(null);
+  const { width } = useWindowDimensions();
+
   const onPageChange = (event) => {
     const offsetX = event.nativeEvent.contentOffset.x;
-    const page = Math.floor(offsetX / welcomeSlider.length) / 90;
-    setCurrentPage(page);
+    const newPage = Math.floor(offsetX / width);
+
+    if (newPage === currentPage) {
+      setCurrentPage(newPage);
+      return;
+    }
   };
-  console.log(currentPage);
+
+  const scrollToPage = (pageNumber) => {
+    flatListRef.current.scrollToIndex({
+      index: pageNumber,
+      Animated: true,
+    });
+  };
+
+  const handlePress = () => {
+    const nextPage =
+      currentPage > welcomeSlider.length - 2 ? 0 : currentPage + 1;
+    setCurrentPage(nextPage);
+    scrollToPage(nextPage);
+  };
+
   return (
     <View>
       <FlatList
+        ref={flatListRef}
         data={welcomeSlider}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <WelcomePageItem item={item} />}
         horizontal
+        scrollEnabled={false}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={onPageChange}
       />
 
       <View style={styles.footer}>
-        <View style={styles.dotsContainer}>
-          {welcomeSlider.map((_, index) => {
-            return (
-              <View
-                key={index.toString()}
-                style={[
-                  styles.dots,
-                  Math.floor(currentPage) === index ? styles.activeDot : {},
-                ]}
-              ></View>
-            );
-          })}
-        </View>
-        <TouchableOpacity
-          style={styles.nextBtn}
-          onPress={() => setCurrentPage(currentPage >= 3 ? 0 : currentPage + 1)}
-        >
-          <Text style={styles.nextBtnText}>Next</Text>
-        </TouchableOpacity>
+        {currentPage !== welcomeSlider.length - 1 ? (
+          <>
+            <View style={styles.dotsContainer}>
+              {welcomeSlider.map((_, index) => {
+                return (
+                  <View
+                    key={index.toString()}
+                    style={[
+                      styles.dots,
+                      currentPage === index ? styles.activeDot : {},
+                    ]}
+                  ></View>
+                );
+              })}
+            </View>
+            <TouchableOpacity style={styles.nextBtn} onPress={handlePress}>
+              <Text style={styles.nextBtnText}>Next</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <View style={[styles.footer, { justifyContent: "center" }]}>
+            <TouchableOpacity style={styles.start}>
+              <Text style={styles.nextBtnText}>Let's get started</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -121,6 +161,14 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     backgroundColor: "#218D96",
+  },
+  start: {
+    height: 60,
+    width: 200,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#218D96",
+    borderRadius: 10,
   },
 });
 
