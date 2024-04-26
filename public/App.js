@@ -1,13 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import Welcome from "./pages/auth/Welcome";
+import MainApp from "./MainApp";
+import { AppProvider } from "./contextapi/useGlobalContext";
 
 export default function App() {
   return (
-    <View>
-      <Welcome />
-    </View>
+    <AppProvider>
+      <MainApp />
+    </AppProvider>
   );
 }
-
-const styles = StyleSheet.create({});

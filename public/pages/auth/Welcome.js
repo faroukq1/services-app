@@ -6,8 +6,6 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  StatusBar,
-  Animated,
   useWindowDimensions,
 } from "react-native";
 import React, { useRef, useState } from "react";
@@ -51,10 +49,10 @@ welcomeSlider = [
     image: require("../../assets/start.png"),
   },
 ];
-const Welcome = () => {
+const Welcome = ({ navigation }) => {
+  const { width } = useWindowDimensions();
   const [currentPage, setCurrentPage] = useState(0);
   const flatListRef = useRef(null);
-  const { width } = useWindowDimensions();
 
   const onPageChange = (event) => {
     const offsetX = event.nativeEvent.contentOffset.x;
@@ -81,7 +79,7 @@ const Welcome = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         ref={flatListRef}
         data={welcomeSlider}
@@ -116,7 +114,10 @@ const Welcome = () => {
           </>
         ) : (
           <View style={[styles.footer, { justifyContent: "center" }]}>
-            <TouchableOpacity style={styles.start}>
+            <TouchableOpacity
+              style={styles.start}
+              onPress={() => navigation.navigate("login")}
+            >
               <Text style={styles.nextBtnText}>Let's get started</Text>
             </TouchableOpacity>
           </View>
@@ -127,6 +128,10 @@ const Welcome = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   footer: {
     padding: 20,
     width: "100%",
