@@ -116,7 +116,7 @@ const Welcome = ({ navigation }) => {
           <View style={[styles.footer, { justifyContent: "center" }]}>
             <TouchableOpacity
               style={styles.start}
-              onPress={() => navigation.navigate("login")}
+              onPress={() => navigation.navigate("auth")}
             >
               <Text style={styles.nextBtnText}>Let's get started</Text>
             </TouchableOpacity>

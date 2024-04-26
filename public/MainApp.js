@@ -3,7 +3,8 @@ import Welcome from "./pages/auth/Welcome";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginPage from "./pages/auth/LoginPage";
-import { StatusBar } from "expo-status-bar";
+import AuthPage from "./pages/auth/AuthPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 const Stack = createNativeStackNavigator();
 
 const MainApp = () => {
@@ -24,6 +25,19 @@ const MainApp = () => {
           options={{
             headerShown: false,
           }}
+        />
+
+        <Stack.Screen
+          name="register"
+          component={RegisterPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="auth"
+          component={AuthPage}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
