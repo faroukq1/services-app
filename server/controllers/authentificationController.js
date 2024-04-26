@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const signUp = async (req, res) => {
   try {
     const {
-      user_id,
       user_name,
       email,
       user_adress,
@@ -16,7 +15,6 @@ const signUp = async (req, res) => {
     } = req.body;
 
     if (
-      !user_id ||
       !user_name ||
       !email ||
       !user_adress ||
@@ -32,14 +30,17 @@ const signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(user_password, 10);
     await pool.query(
       `INSERT INTO users (
-        user_id, user_name,
-        email, user_adress, user_password,
-        full_name, profile_image, phone_number,
+        user_name,
+        email,
+        user_adress, 
+        user_password,
+        full_name, 
+        profile_image, 
+        phone_number,
         credit_card_number
           ) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        user_id,
         user_name,
         email,
         user_adress,
@@ -93,7 +94,22 @@ const logIn = async (req, res) => {
     res.status(500).send({ message: "failed to login" });
   }
 };
+
+const ProfilePicture = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const profilePicUrl = req.file.filename;
+    const result = await pool.query(
+      `UPDATE users SET profile_image=? WHERE user_id=?`,
+      [profilePicUrl, id]
+    );
+    res.status(200).send({ name: profilePicUrl });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
 module.exports = {
   signUp,
   logIn,
+  ProfilePicture,
 };

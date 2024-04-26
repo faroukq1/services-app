@@ -4,5 +4,5 @@ const authentificationController = require("../controllers/authentificationContr
 
 router.post("/signup", authentificationController.signUp);
 router.post("/login", authentificationController.logIn);
-
+router.post("/profilepic/:id", authentificationController.ProfilePicture);
 module.exports = router;

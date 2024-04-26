@@ -33,7 +33,6 @@ const getService = async (req, res) => {
 const createService = async (req, res) => {
   try {
     const {
-      user_id,
       service_name,
       service_description,
       service_category,
@@ -43,7 +42,6 @@ const createService = async (req, res) => {
       service_creation_date,
     } = req.body;
     if (
-      !user_id ||
       !service_name ||
       !service_category ||
       !service_price ||
@@ -52,10 +50,9 @@ const createService = async (req, res) => {
       return res.status(400).send({ error: "Missing required fields" });
     }
     await pool.query(
-      `INSERT INTO services (user_id, service_name, service_description, service_category, service_price, service_images, service_rating, service_creation_date)
+      `INSERT INTO services (service_name, service_description, service_category, service_price, service_images, service_rating, service_creation_date)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        user_id,
         service_name,
         service_description,
         service_category,
@@ -114,10 +111,25 @@ const updateService = async (req, res) => {
   }
 };
 
+const servicePicture = async (req, res) => {
+  try {
+    const file = req.file.filename;
+    const service_id = req.params.id;
+    const result = await pool.query(
+      "UPDATE services SET service_image=? WHERE service_id=?",
+      [file, service_id]
+    );
+    res.status(200).send({ message: "Service has been updated" });
+  } catch (error) {
+    res.status(500).send({ error: "Failed to update service" });
+  }
+};
+
 module.exports = {
   getServices,
   getService,
   createService,
   deleteService,
   updateService,
+  servicePicture,
 };
