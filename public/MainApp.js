@@ -20,6 +20,13 @@ const MainApp = () => {
         />
 
         <Stack.Screen
+          name="register"
+          component={RegisterPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="login"
           component={LoginPage}
           options={{
@@ -27,13 +34,6 @@ const MainApp = () => {
           }}
         />
 
-        <Stack.Screen
-          name="register"
-          component={RegisterPage}
-          options={{
-            headerShown: false,
-          }}
-        />
         <Stack.Screen
           name="auth"
           component={AuthPage}
