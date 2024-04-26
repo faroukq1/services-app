@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     width: 75,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#218D96",
+    backgroundColor: "#3200E2",
     borderRadius: 10,
   },
   nextBtnText: {
@@ -159,21 +159,22 @@ const styles = StyleSheet.create({
   },
   dots: {
     borderWidth: 2,
-    borderColor: "#218D96",
+    borderColor: "#3200E2",
     width: 15,
     height: 15,
     borderRadius: 100,
   },
   activeDot: {
-    backgroundColor: "#218D96",
+    backgroundColor: "#3200E2",
   },
   start: {
     height: 60,
     width: 200,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#218D96",
+    backgroundColor: "#3200E2",
     borderRadius: 10,
+    marginBottom: 20,
   },
 });
 

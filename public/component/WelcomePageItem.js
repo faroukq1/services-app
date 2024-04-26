@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#218D96",
+    color: "#3200E2",
   },
   subText: {
     fontSize: 20,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 20,
     fontSize: 14,
-    color: "#A9A9A9",
+    color: "#6C6AB4",
     fontWeight: "400",
   },
   footer: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     width: 75,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#218D96",
+    backgroundColor: "#3200E2",
     borderRadius: 10,
   },
   nextBtnText: {
