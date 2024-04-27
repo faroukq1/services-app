@@ -25,42 +25,38 @@ const MainApp = () => {
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
-              if (route.name === "Home") {
+              if (route.name === "home") {
                 iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Discover") {
+              } else if (route.name === "discover") {
                 iconName = focused ? "search" : "search-outline";
-              } else if (route.name === "Wishlist") {
+              } else if (route.name === "wishlist") {
                 iconName = focused ? "heart" : "heart-outline";
-              } else if (route.name === "Account") {
+              } else if (route.name === "account") {
                 iconName = focused ? "person" : "person-outline";
               }
               return <Ionicons name={iconName} size={size} color={color} />;
             },
           })}
-          tabBarOptions={{
-            activeTintColor: "blue",
-            inactiveTintColor: "gray",
-          }}
         >
           <Tab.Screen
             options={{ headerShown: false }}
-            name="Home"
+            name="account"
+            component={AccountPage}
+          />
+          <Tab.Screen
+            options={{ headerShown: false }}
+            name="home"
             component={HomePage}
           />
           <Tab.Screen
             options={{ headerShown: false }}
-            name="Discover"
+            name="discover"
             component={DiscoverPage}
           />
           <Tab.Screen
             options={{ headerShown: false }}
-            name="Wishlist"
+            name="wishlist"
             component={WishListPage}
-          />
-          <Tab.Screen
-            options={{ headerShown: false }}
-            name="Account"
-            component={AccountPage}
           />
         </Tab.Navigator>
       </NavigationContainer>
