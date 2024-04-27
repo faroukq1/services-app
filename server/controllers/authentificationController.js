@@ -1,6 +1,5 @@
 const pool = require("../database");
 const helpers = require("../utils/helpers");
-const bcrypt = require("bcrypt");
 const signUp = async (req, res) => {
   try {
     const {
@@ -27,7 +26,6 @@ const signUp = async (req, res) => {
       res.status(400).send({ message: "unvalid required fields" });
       return;
     }
-    const hashedPassword = await bcrypt.hash(user_password, 10);
     await pool.query(
       `INSERT INTO users (
         user_name,
@@ -44,7 +42,7 @@ const signUp = async (req, res) => {
         user_name,
         email,
         user_adress,
-        hashedPassword,
+        user_password,
         full_name,
         profile_image,
         phone_number,
@@ -76,14 +74,8 @@ const logIn = async (req, res) => {
       res.status(404).send({ message: "invalid username or passoword" });
       return;
     }
-    const hashedPasswordFromDb = data[0].user_password;
-    const passwordMatch = await bcrypt.compare(
-      user_password,
-      hashedPasswordFromDb
-    );
-
-    if (!passwordMatch) {
-      res.status(400).send({ message: "invalid email or password" });
+    if (data[0].user_password !== user_password) {
+      res.status(404).send({ message: "invalid username or passoword" });
       return;
     }
     res

@@ -65,6 +65,7 @@ const LoginPage = ({ navigation }) => {
           style={styles.input}
           placeholder="password"
           value={loginResult.user_password}
+          secureTextEntry
           onChange={(e) =>
             setLoginResult({
               ...loginResult,
