@@ -4,11 +4,14 @@ const appContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
+  const [userInformation, setUserInformation] = useState({});
   return (
     <appContext.Provider
       value={{
         isLogin,
         setIsLogin,
+        userInformation,
+        setUserInformation,
       }}
     >
       {children}

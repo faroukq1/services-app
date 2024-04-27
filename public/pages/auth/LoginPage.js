@@ -6,11 +6,42 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BackButton from "../../component/BackButton";
 import AuthHeader from "../../component/AuthHeader";
+import axios from "axios";
+import { useGlobalContext } from "../../contextapi/useGlobalContext";
 
 const LoginPage = ({ navigation }) => {
+  const { setIsLogin, setUserInformation } = useGlobalContext();
+  const [loginResult, setLoginResult] = useState({
+    email: "",
+    user_password: "",
+  });
+
+  const getUserInformation = async (id) => {
+    const ACCOUNT_DETAILS_URL = `http://192.168.1.7:3000/api/user/${id}`;
+    try {
+      const response = await axios.get(ACCOUNT_DETAILS_URL);
+      const data = response.data.data[0];
+      setUserInformation(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogin = async () => {
+    const LOGIN_URL = "http://192.168.1.7:3000/api/auth/login";
+    try {
+      const response = await axios.post(LOGIN_URL, loginResult);
+      const data = response.data;
+      getUserInformation(data.user_id);
+      setIsLogin(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -19,13 +50,33 @@ const LoginPage = ({ navigation }) => {
 
       <AuthHeader mainText="Welcome!" subText="sing in to continue" />
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} placeholder="email" />
-        <TextInput style={styles.input} placeholder="password" />
+        <TextInput
+          style={styles.input}
+          placeholder="email"
+          value={loginResult.email}
+          onChange={(e) =>
+            setLoginResult({
+              ...loginResult,
+              email: e.nativeEvent.text,
+            })
+          }
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="password"
+          value={loginResult.user_password}
+          onChange={(e) =>
+            setLoginResult({
+              ...loginResult,
+              user_password: e.nativeEvent.text,
+            })
+          }
+        />
       </View>
 
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>Register</Text>
+        <TouchableOpacity style={styles.btn} onPress={() => handleLogin()}>
+          <Text style={styles.btnText}>Login</Text>
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "center", gap: 5 }}>

@@ -5,9 +5,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import LoginPage from "./pages/auth/LoginPage";
 import AuthPage from "./pages/auth/AuthPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import { useGlobalContext } from "./contextapi/useGlobalContext";
+import { Text, View } from "react-native";
 const Stack = createNativeStackNavigator();
 
 const MainApp = () => {
+  const { isLogin } = useGlobalContext();
+  if (isLogin) {
+    return (
+      <View>
+        <Text>welcom you logged in</Text>
+      </View>
+    );
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator>
