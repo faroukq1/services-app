@@ -1,15 +1,19 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import SettingItem from "./SettingItem";
+import DarkModeToggle from "./DarkModeToggle";
 
-const Setting = ({ handleLogOut }) => {
+const Setting = ({ handleLogOut, setEditProfile, setChangePassword }) => {
   return (
     <>
       <View>
         <SettingItem text="Account" image={require("../assets/account.png")} />
 
         <View style={styles.accountSettingItem}>
-          <TouchableOpacity style={styles.accountSettingBtn}>
+          <TouchableOpacity
+            style={styles.accountSettingBtn}
+            onPress={() => setEditProfile(true)}
+          >
             <Text style={styles.btnText}>Edit Profile</Text>
             <Image
               style={styles.image}
@@ -17,7 +21,10 @@ const Setting = ({ handleLogOut }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.accountSettingBtn}>
+          <TouchableOpacity
+            style={styles.accountSettingBtn}
+            onPress={() => setChangePassword(true)}
+          >
             <Text style={styles.btnText}>Change Password</Text>
             <Image
               style={styles.image}
@@ -31,11 +38,9 @@ const Setting = ({ handleLogOut }) => {
         <View style={styles.accountSettingItem}>
           <TouchableOpacity style={styles.accountSettingBtn}>
             <Text style={styles.btnText}>Language</Text>
-            <Image
-              style={styles.image}
-              source={require("../assets/back.png")}
-            />
+            <Text style={{ fontWeight: "bold" }}>english</Text>
           </TouchableOpacity>
+          <DarkModeToggle />
         </View>
       </View>
 

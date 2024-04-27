@@ -1,11 +1,22 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import React, { useState } from "react";
 import SettingItem from "../../component/SettingItem";
 import { useGlobalContext } from "../../contextapi/useGlobalContext";
 import Setting from "../../component/Setting";
+import EditProfile from "../../component/EditProfile";
+import ChangePassword from "../../component/ChangePassword";
 
 const AccountPage = ({ navigation }) => {
   const { setIsLogin, setUserInformation } = useGlobalContext();
+  const [editProfile, setEditProfile] = useState(true);
+  const [changePassword, setChangePassword] = useState(false);
   const handleLogOut = () => {
     setUserInformation({});
     setIsLogin(false);
@@ -19,9 +30,21 @@ const AccountPage = ({ navigation }) => {
         />
       </TouchableOpacity>
       <View style={styles.settingTextContainer}>
-        <Text style={styles.settingText}>Setting</Text>
+        <Text style={styles.settingText}>
+          {editProfile ? "Edit profile" : "Setting"}
+        </Text>
       </View>
-      <Setting handleLogOut={handleLogOut} />
+      {editProfile ? (
+        <EditProfile setEditProfile={setEditProfile} />
+      ) : changePassword ? (
+        <ChangePassword setChangePassword={setChangePassword} />
+      ) : (
+        <Setting
+          setEditProfile={setEditProfile}
+          setChangePassword={setChangePassword}
+          handleLogOut={handleLogOut}
+        />
+      )}
     </View>
   );
 };
@@ -33,13 +56,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   backImage: {
-    marginTop: 15,
-    marginBottom: 15,
+    marginTop: 5,
     width: 50,
     height: 50,
   },
   settingTextContainer: {
-    flex: 0.3,
+    marginTop: 10,
+    marginBottom: 10,
     justifyContent: "center",
   },
   settingText: {
@@ -53,7 +76,6 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "180deg" }],
   },
   accountSettingBtn: {
-    paddingVertical: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
