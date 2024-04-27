@@ -6,67 +6,52 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../contextapi/useGlobalContext";
+import EditProfileSettingItem from "./EditProfileSettingItem";
 
 const EditProfile = ({ setEditProfile }) => {
   const { userInformation } = useGlobalContext();
+  const [edit, setEdit] = useState(false);
+  const inputList = [
+    {
+      id: 1,
+      text: "User name",
+      value: userInformation.user_name,
+    },
+    {
+      id: 2,
+      text: "Full name",
+      value: userInformation.full_name,
+    },
+    {
+      id: 3,
+      text: "Email",
+      value: userInformation.email,
+    },
+    {
+      id: 4,
+      text: "Phone number",
+      value: userInformation.phone,
+    },
+    {
+      id: 5,
+      text: "Adress",
+      value: userInformation.adress,
+    },
+    {
+      id: 6,
+      text: "Credit card number",
+      value: userInformation.credit_card_number,
+    },
+  ];
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>User name</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="User name"
-          value={userInformation.user_name}
-          readOnly
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Full name</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Full name"
-          value={userInformation.full_name}
-          readOnly
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Email</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={userInformation.email}
-          readOnly
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Adress</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Adress"
-          value={userInformation.user_adress}
-          readOnly
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Phone number</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Phone number"
-          value={userInformation.phone_number}
-          readOnly
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Credit card number</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Credit card number"
-          value={userInformation.credit_card_number}
-          readOnly
-        />
-      </View>
+      {inputList.map(({ id, text, value }) => {
+        return (
+          <EditProfileSettingItem key={id} text={text} value={value} readOnly />
+        );
+      })}
       <View>
         <TouchableOpacity
           style={styles.backBtn}
@@ -80,23 +65,6 @@ const EditProfile = ({ setEditProfile }) => {
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginTop: 30,
-  },
-  input: {
-    borderBottomWidth: 1,
-    padding: 15,
-    borderColor: "#eee",
-  },
-  text: {
-    position: "absolute",
-    left: 5,
-    top: -10,
-    zIndex: 10,
-
-    backgroundColor: "white",
-    paddingHorizontal: 10,
-  },
   backBtnText: {
     fontSize: 16,
     fontWeight: "500",

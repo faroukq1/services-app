@@ -15,7 +15,7 @@ import ChangePassword from "../../component/ChangePassword";
 
 const AccountPage = ({ navigation }) => {
   const { setIsLogin, setUserInformation } = useGlobalContext();
-  const [editProfile, setEditProfile] = useState(true);
+  const [editProfile, setEditProfile] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const handleLogOut = () => {
     setUserInformation({});
