@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 const appContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [userInformation, setUserInformation] = useState({});
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   return (

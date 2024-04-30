@@ -40,11 +40,6 @@ const MainApp = () => {
         >
           <Tab.Screen
             options={{ headerShown: false }}
-            name="account"
-            component={AccountPage}
-          />
-          <Tab.Screen
-            options={{ headerShown: false }}
             name="home"
             component={HomePage}
           />
@@ -57,6 +52,11 @@ const MainApp = () => {
             options={{ headerShown: false }}
             name="wishlist"
             component={WishListPage}
+          />
+          <Tab.Screen
+            options={{ headerShown: false }}
+            name="account"
+            component={AccountPage}
           />
         </Tab.Navigator>
       </NavigationContainer>
