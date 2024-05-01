@@ -1,10 +1,8 @@
 const pool = require("../database");
 const getServices = async (req, res) => {
   try {
-    const [services] = await pool.query(
-      "SELECT * FROM services WHERE service_rating > 4"
-    );
-    res.status(200).send({ services });
+    const response = await pool.query("SELECT * FROM services");
+    res.status(200).send(response[0]);
   } catch (error) {
     res
       .status(500)

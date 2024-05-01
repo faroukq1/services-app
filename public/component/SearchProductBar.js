@@ -1,14 +1,12 @@
 import { View, Text, TextInput, Image, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import { useHomeContext } from "../contextapi/useHomeContext";
 import debounce from "lodash/debounce";
 
-const SearchProductBar = () => {
+const SearchProductBar = ({ setSearchFunction }) => {
   const [inputValue, setInputValue] = useState("");
-  const { setSearchRecommendedServices } = useHomeContext();
 
   const debounceInputValue = debounce((value) => {
-    setSearchRecommendedServices(value);
+    setSearchFunction(value);
   }, 500);
   const handleInputChange = (event) => {
     const value = event.nativeEvent.text;
@@ -22,7 +20,7 @@ const SearchProductBar = () => {
         value={inputValue}
         style={styles.input}
         onChange={handleInputChange}
-        placeholder="Search Recommended Product"
+        placeholder="Looking for something ?"
       />
     </View>
   );
