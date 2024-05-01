@@ -1,7 +1,9 @@
 const pool = require("../database");
 const getServices = async (req, res) => {
   try {
-    const [services] = await pool.query("SELECT * FROM services");
+    const [services] = await pool.query(
+      "SELECT * FROM services WHERE service_rating > 4"
+    );
     res.status(200).send({ services });
   } catch (error) {
     res
@@ -111,6 +113,17 @@ const updateService = async (req, res) => {
   }
 };
 
+const recomendService = async (req, res) => {
+  try {
+    const response = await pool.query(
+      "SELECT * FROM services WHERE service_rating > 4"
+    );
+    res.status(200).send(response[0]);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 const servicePicture = async (req, res) => {
   try {
     const file = req.file.filename;
@@ -132,4 +145,5 @@ module.exports = {
   deleteService,
   updateService,
   servicePicture,
+  recomendService,
 };

@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import { useHomeContext } from "../contextapi/useHomeContext";
 
-const Categories = ({ selectedCategorie, setSelectedCategorie }) => {
+const Categories = () => {
+  const { selectedCategorie, setSelectedCategorie } = useHomeContext();
+
   const categoriesList = [
     "All",
     "Plumber",
-    "Bebe sitting",
+    "Baby sitting",
     "Meal Preparing",
     "Home Automation",
   ];
@@ -22,14 +25,14 @@ const Categories = ({ selectedCategorie, setSelectedCategorie }) => {
       style={styles.container}
     >
       <ScrollView
-        showsHorizontalScrollIndicator={false}
         horizontal
+        showsHorizontalScrollIndicator={false}
         style={styles.categoryContainer}
       >
         {categoriesList.map((name, index) => {
           return (
             <TouchableOpacity
-              onPress={() => setSelectedCategorie(name)}
+              onPress={() => setSelectedCategorie(name || "All")}
               key={index}
               style={[
                 styles.singleCategory,
