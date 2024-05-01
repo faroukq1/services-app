@@ -12,7 +12,7 @@ import SearchProductBar from "../../component/SearchProductBar";
 import Categories from "../../component/Categories";
 import { useHomeContext } from "../../contextapi/useHomeContext";
 
-const HomePage = () => {
+const HomePage = ({ navigation }) => {
   const { recommendedServices } = useHomeContext();
 
   return (
@@ -22,7 +22,10 @@ const HomePage = () => {
       <Categories />
       <View style={styles.recommended}>
         <Text style={styles.recommendedText}>Recommended for You</Text>
-        <TouchableOpacity style={styles.seeMore}>
+        <TouchableOpacity
+          style={styles.seeMore}
+          onPress={() => navigation.navigate("discover")}
+        >
           <Text style={styles.seeMoreText}>See More</Text>
         </TouchableOpacity>
       </View>

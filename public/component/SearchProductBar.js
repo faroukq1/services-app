@@ -1,11 +1,29 @@
 import { View, Text, TextInput, Image, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { useHomeContext } from "../contextapi/useHomeContext";
+import debounce from "lodash/debounce";
 
 const SearchProductBar = () => {
+  const [inputValue, setInputValue] = useState("");
+  const { setSearchRecommendedServices } = useHomeContext();
+
+  const debounceInputValue = debounce((value) => {
+    setSearchRecommendedServices(value);
+  }, 500);
+  const handleInputChange = (event) => {
+    const value = event.nativeEvent.text;
+    setInputValue(value);
+    debounceInputValue(value);
+  };
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require("../assets/search.png")} />
-      <TextInput style={styles.input} placeholder="Search Product" />
+      <TextInput
+        value={inputValue}
+        style={styles.input}
+        onChange={handleInputChange}
+        placeholder="Search Recommended Product"
+      />
     </View>
   );
 };
