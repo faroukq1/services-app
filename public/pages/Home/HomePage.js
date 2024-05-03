@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from "react-native";
-import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import HomeHeader from "../../component/HomeHeader";
 import SearchProductBar from "../../component/SearchProductBar";
 import Categories from "../../component/Categories";
@@ -54,7 +46,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   seeMoreText: {
-    color: "#027C86",
+    color: "#1976d2",
     fontWeight: "bold",
   },
 });

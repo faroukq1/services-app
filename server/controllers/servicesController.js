@@ -114,7 +114,7 @@ const updateService = async (req, res) => {
 const recomendService = async (req, res) => {
   try {
     const response = await pool.query(
-      "SELECT * FROM services WHERE service_rating > 4"
+      "SELECT * FROM services WHERE service_rating > 4.5"
     );
     res.status(200).send(response[0]);
   } catch (error) {

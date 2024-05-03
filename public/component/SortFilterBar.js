@@ -1,7 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { useDiscoverContext } from "../contextapi/useDiscoverContext";
 
 const SortFilterBar = () => {
+  const { setModalVisible, setModalType } = useDiscoverContext();
+  const handlePress = (type) => {
+    setModalType(type);
+    setModalVisible(true);
+  };
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -12,6 +18,7 @@ const SortFilterBar = () => {
             justifyContent: "center",
             gap: 10,
           }}
+          onPress={() => handlePress("sort")}
         >
           <Text style={styles.btn}>Sort</Text>
           <Image
@@ -22,7 +29,7 @@ const SortFilterBar = () => {
       </View>
 
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handlePress("filter")}>
           <Text style={styles.btn}>Filter</Text>
         </TouchableOpacity>
       </View>

@@ -7,17 +7,10 @@ import {
 } from "react-native";
 import React from "react";
 import { useHomeContext } from "../contextapi/useHomeContext";
+import { categoriesList } from "../util/DATA";
 
 const Categories = () => {
   const { selectedCategorie, setSelectedCategorie } = useHomeContext();
-
-  const categoriesList = [
-    "All",
-    "Plumber",
-    "Baby sitting",
-    "Meal Preparing",
-    "Home Automation",
-  ];
   return (
     <View
       showsHorizontalScrollIndicator={false}
@@ -36,7 +29,7 @@ const Categories = () => {
               key={index}
               style={[
                 styles.singleCategory,
-                selectedCategorie === name && { backgroundColor: "#027C86" },
+                selectedCategorie === name && { backgroundColor: "#1976d2" },
               ]}
             >
               <Text
