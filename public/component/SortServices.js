@@ -3,10 +3,15 @@ import React, { useState } from "react";
 import { useDiscoverContext } from "../contextapi/useDiscoverContext";
 
 const SortServices = () => {
-  const { selectedSortingOption, setselectedSortingOption, sortingOptions } =
-    useDiscoverContext();
+  const {
+    selectedSortingOption,
+    setselectedSortingOption,
+    sortingOptions,
+    setModalVisible,
+  } = useDiscoverContext();
   const handleSelectPress = (text) => {
     setselectedSortingOption(text);
+    setModalVisible(false);
   };
   return (
     <View style={styles.container}>

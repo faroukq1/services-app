@@ -1,15 +1,23 @@
-import { View, Text, Modal, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
-import SortServices from "./SortServices";
-import FilterServices from "./FilterServices";
-
-const FilterModal = ({ type }) => {
-  if (type === "sort") return <SortServices />;
-  if (type === "filter") return <FilterServices />;
-  return null;
-};
+import {
+  View,
+  Text,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import FilterModal from "./FilterModal";
+import { useDiscoverContext } from "../contextapi/useDiscoverContext";
 
 const FilterServicesModal = ({ modalType, setModalVisible, modalVisible }) => {
+  const { setServiceFilter } = useDiscoverContext();
+  const handleCleanFilter = () => {
+    setServiceFilter({
+      Location: "",
+      Category: "",
+    });
+    setModalVisible(false);
+  };
   return (
     <Modal
       animationType="fade"
@@ -21,15 +29,27 @@ const FilterServicesModal = ({ modalType, setModalVisible, modalVisible }) => {
         <View
           style={[
             styles.modal,
-            modalType === "sort" ? { height: 170 } : { height: 270 },
+            modalType === "sort" ? { height: 170 } : { height: 320 },
           ]}
         >
           <View style={styles.btnContainer}>
             <TouchableOpacity
               style={styles.closeBtn}
+              onPress={handleCleanFilter}
+            >
+              <Image
+                style={styles.img}
+                source={require("../assets/trash.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.closeBtn}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>close</Text>
+              <Image
+                style={styles.img}
+                source={require("../assets/close.png")}
+              />
             </TouchableOpacity>
           </View>
           <FilterModal type={modalType} />
@@ -56,12 +76,16 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   closeBtn: {
-    backgroundColor: "#00215E",
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 10,
+  },
+  img: {
+    width: 20,
+    height: 20,
   },
 });
 

@@ -10,7 +10,15 @@ const SortFilterBar = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRightColor: "#eee",
+          borderRightWidth: 1,
+        }}
+      >
         <TouchableOpacity
           style={{
             flexDirection: "row",

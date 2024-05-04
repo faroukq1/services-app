@@ -6,21 +6,16 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { categoriesList } from "../util/DATA";
+import { useDiscoverContext } from "../contextapi/useDiscoverContext";
+import FilterButton from "./FilterButton";
 
 const FilterServices = () => {
-  const [filterOptions, setFilterOptions] = useState([
-    {
-      id: 1,
-      text: "Location",
-      options: ["1km", "2km", "5km", "10km"],
-    },
-    {
-      id: 2,
-      text: "Categories",
-      options: categoriesList,
-    },
-  ]);
+  const { setModalVisible, filterOptions, setServiceFilter } =
+    useDiscoverContext();
+
+  const handleFilter = () => {
+    setModalVisible(false);
+  };
   return (
     <View style={styles.container}>
       {filterOptions.map(({ id, text, options }) => {
@@ -32,17 +27,14 @@ const FilterServices = () => {
               showsHorizontalScrollIndicator={false}
               style={styles.filterContainer}
             >
-              {options.map((text, index) => {
-                return (
-                  <TouchableOpacity style={styles.btn} key={index}>
-                    <Text style={{ color: "#8C8C8C" }}>{text}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+              <FilterButton data={options} category={text} />
             </ScrollView>
           </View>
         );
       })}
+      <TouchableOpacity style={styles.filterBtn} onPress={() => handleFilter()}>
+        <Text>Filter</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -54,18 +46,18 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 25,
   },
-  btn: {
-    padding: 10,
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#EDEDED",
-    borderRadius: 10,
-    marginRight: 10,
-  },
   text: {
     fontSize: 17,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  filterBtn: {
+    backgroundColor: "#1976d2",
+    padding: 10,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    textAlign: "center",
+    color: "white",
   },
 });
 

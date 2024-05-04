@@ -20,7 +20,7 @@ const SearchProductBar = ({ setSearchFunction }) => {
         value={inputValue}
         style={styles.input}
         onChange={handleInputChange}
-        placeholder="Looking for something ?"
+        placeholder="Looking for something?"
       />
     </View>
   );

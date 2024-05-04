@@ -7,28 +7,18 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
+import RenderStart from "./RenderStart";
+import { sortingHelperFuntion } from "../util/helperFunctions";
+import { useDiscoverContext } from "../contextapi/useDiscoverContext";
 
 const ServiceCard = ({ data }) => {
-  const RenderStart = ({ value }) => {
-    const starts = Array(5).fill();
-    return starts.map((_, index) => {
-      return (
-        <Icon
-          key={index}
-          name="star"
-          size={20}
-          color={index < value ? "orange" : "grey"}
-        />
-      );
-    });
-  };
+  const { selectedSortingOption } = useDiscoverContext();
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={styles.recommendedProduct}
     >
-      {data.map(
+      {sortingHelperFuntion(data, selectedSortingOption).map(
         ({
           service_id,
           service_category,
@@ -36,6 +26,7 @@ const ServiceCard = ({ data }) => {
           service_price,
           service_description,
           service_rating,
+          service_creation_date,
         }) => {
           return (
             <View style={styles.recommendedservicesCard} key={service_id}>
@@ -66,7 +57,12 @@ const ServiceCard = ({ data }) => {
 
                 <View style={styles.description}>
                   <Text style={styles.nameText}>{service_name}</Text>
-                  <Text style={styles.descText}>{service_description}</Text>
+                  <Text style={styles.descText}>
+                    {service_description}
+                    {"\n"}
+                    {"\n"}
+                    created at : {service_creation_date.substring(0, 10)}
+                  </Text>
                   <TouchableOpacity style={styles.viewBtn}>
                     <Text
                       style={{

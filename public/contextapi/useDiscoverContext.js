@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import useFetchHook from "../util/useFetchHook";
+import { filterOptionList, sortingOptionsList } from "../util/DATA";
 
 const appDiscoverContext = createContext();
 
@@ -8,27 +9,48 @@ export const AppDiscoverProvider = ({ children }) => {
   const [searchAllServices, setSearchAllServices] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [sortingOptions, setSortingOption] = useState([
-    "Most recent",
-    "Most popular",
-    "Highest price",
-    "Lowest price",
-    "Alphabetically",
-  ]);
+  const [sortingOptions, setSortingOption] = useState(sortingOptionsList);
   const [selectedSortingOption, setselectedSortingOption] = useState("");
+  const [filterOptions, setFilterOptions] = useState(filterOptionList);
+  const [serviceFilter, setServiceFilter] = useState({
+    Location: "",
+    Category: "",
+  });
   useEffect(() => {
     const fetchAllProduct = async () => {
       try {
+        // filter services based on category
+        if (serviceFilter.Category !== "" && serviceFilter.Category !== "All") {
+          const response = await useFetchHook.get(
+            `api/services/category/${serviceFilter.Category}`
+          );
+          const data = response.data;
+          setAllServices(data);
+          return;
+        }
+
+        // setAllServices(data);
         const response = await useFetchHook.get("api/services/");
         const data = response.data;
         setAllServices(data);
+
+        // filter services based on search bar
+        if (searchAllServices.length !== "") {
+          const filtredServicesList = data.filter((item) => {
+            return item.service_name
+              .toLowerCase()
+              .includes(searchAllServices.toLowerCase());
+          });
+          setAllServices(filtredServicesList);
+          return;
+        }
       } catch (error) {
-        console.log(error);
+        console.log("error from here " + error);
       }
     };
 
     fetchAllProduct();
-  }, []);
+  }, [searchAllServices, serviceFilter]);
   return (
     <appDiscoverContext.Provider
       value={{
@@ -43,6 +65,10 @@ export const AppDiscoverProvider = ({ children }) => {
         setselectedSortingOption,
         sortingOptions,
         setSortingOption,
+        filterOptions,
+        setFilterOptions,
+        serviceFilter,
+        setServiceFilter,
       }}
     >
       {children}

@@ -122,6 +122,25 @@ const recomendService = async (req, res) => {
   }
 };
 
+const getServicesByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    if (category === "All") {
+      const response = await pool.query("SELECT * FROM services");
+      res.status(200).send(response[0]);
+      return;
+    }
+    const response = await pool.query(
+      "SELECT * FROM services WHERE service_category = ?",
+      [category]
+    );
+
+    res.status(200).send(response[0]);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 const servicePicture = async (req, res) => {
   try {
     const file = req.file.filename;
@@ -144,4 +163,5 @@ module.exports = {
   updateService,
   servicePicture,
   recomendService,
+  getServicesByCategory,
 };
