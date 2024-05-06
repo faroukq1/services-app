@@ -13,7 +13,7 @@ const DiscoverPage = ({ navigation }) => {
       <DiscoverHeader navigation={navigation} />
       <SortFilterBar />
       <View style={{ flex: 1 }}>
-        <ServiceCard data={allServices} />
+        <ServiceCard navigation={navigation} data={allServices} />
       </View>
       <FilterServicesModal
         modalType={modalType}

@@ -32,8 +32,6 @@ export const AppDiscoverProvider = ({ children }) => {
         // setAllServices(data);
         const response = await useFetchHook.get("api/services/");
         const data = response.data;
-        setAllServices(data);
-
         // filter services based on search bar
         if (searchAllServices.length !== "") {
           const filtredServicesList = data.filter((item) => {
@@ -44,6 +42,9 @@ export const AppDiscoverProvider = ({ children }) => {
           setAllServices(filtredServicesList);
           return;
         }
+
+        // set all services in case of no search or category filter
+        setAllServices(data);
       } catch (error) {
         console.log("error from here " + error);
       }

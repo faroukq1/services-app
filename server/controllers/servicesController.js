@@ -1,7 +1,9 @@
 const pool = require("../database");
 const getServices = async (req, res) => {
   try {
-    const response = await pool.query("SELECT * FROM services");
+    const response = await pool.query(
+      "SELECT services.*, users.user_id, users.user_name, users.profile_image , users.user_adress FROM services JOIN users ON services.user_id = users.user_id"
+    );
     res.status(200).send(response[0]);
   } catch (error) {
     res
@@ -16,14 +18,17 @@ const getService = async (req, res) => {
     if (isNaN(id) || id <= 0) {
       return res.status(400).send({ error: "Invalid service ID" });
     }
+
+    //SELECT * FROM services WHERE service_id=?
     const [service] = await pool.query(
-      "SELECT * FROM services WHERE service_id=?",
+      "SELECT services.*, users.user_id, users.user_name, users.profile_image , users.user_adress FROM services JOIN users ON services.user_id = users.user_id WHERE service_id = ?",
       [id]
     );
     if (!service) {
       return res.status(404).send({ error: "Service not found" });
     }
-    res.status(200).send({ service });
+
+    res.status(200).send(service[0]);
   } catch (error) {
     console.error("Error fetching service:", error);
     res.status(500).send({ error: "Failed to fetch service" });
@@ -114,9 +119,10 @@ const updateService = async (req, res) => {
 const recomendService = async (req, res) => {
   try {
     const response = await pool.query(
-      "SELECT * FROM services WHERE service_rating > 4.5"
+      "SELECT * FROM services WHERE service_rating = 5"
     );
-    res.status(200).send(response[0]);
+    const data = response[0];
+    res.status(200).send(data.slice(0, 3));
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

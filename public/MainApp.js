@@ -12,11 +12,12 @@ import DiscoverPage from "./pages/Home/DiscoverPage";
 import WishListPage from "./pages/Home/WishListPage";
 import AccountPage from "./pages/Home/AccountPage";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useWishListContext } from "./contextapi/useWishListContext";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainApp = () => {
   const { isLogin } = useGlobalContext();
-
+  const { wishList } = useWishListContext();
   if (isLogin) {
     return (
       <NavigationContainer>
@@ -40,6 +41,11 @@ const MainApp = () => {
         >
           <Tab.Screen
             options={{ headerShown: false }}
+            name="wishlist"
+            component={WishListPage}
+          />
+          <Tab.Screen
+            options={{ headerShown: false }}
             name="home"
             component={HomePage}
           />
@@ -47,11 +53,6 @@ const MainApp = () => {
             options={{ headerShown: false }}
             name="discover"
             component={DiscoverPage}
-          />
-          <Tab.Screen
-            options={{ headerShown: false }}
-            name="wishlist"
-            component={WishListPage}
           />
           <Tab.Screen
             options={{ headerShown: false }}

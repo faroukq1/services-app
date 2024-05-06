@@ -4,12 +4,15 @@ import { AppProvider } from "./contextapi/useGlobalContext";
 import Toast from "react-native-toast-message";
 import { AppHomeProvider } from "./contextapi/useHomeContext";
 import { AppDiscoverProvider } from "./contextapi/useDiscoverContext";
+import { AppWishListProvider } from "./contextapi/useWishListContext";
 export default function App() {
   return (
     <AppProvider>
       <AppHomeProvider>
         <AppDiscoverProvider>
-          <MainApp />
+          <AppWishListProvider>
+            <MainApp />
+          </AppWishListProvider>
         </AppDiscoverProvider>
         <Toast />
         <StatusBar style="auto" />

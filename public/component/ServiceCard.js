@@ -10,9 +10,15 @@ import React from "react";
 import RenderStart from "./RenderStart";
 import { sortingHelperFuntion } from "../util/helperFunctions";
 import { useDiscoverContext } from "../contextapi/useDiscoverContext";
+import { useWishListContext } from "../contextapi/useWishListContext";
 
-const ServiceCard = ({ data }) => {
+const ServiceCard = ({ data, navigation }) => {
   const { selectedSortingOption } = useDiscoverContext();
+  const { setServiceID } = useWishListContext();
+  const handleDispatchDetails = (serviceID) => {
+    navigation.navigate("wishlist");
+    setServiceID(serviceID);
+  };
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -20,6 +26,7 @@ const ServiceCard = ({ data }) => {
     >
       {sortingHelperFuntion(data, selectedSortingOption).map(
         ({
+          user_id,
           service_id,
           service_category,
           service_name,
@@ -63,7 +70,10 @@ const ServiceCard = ({ data }) => {
                     {"\n"}
                     created at : {service_creation_date.substring(0, 10)}
                   </Text>
-                  <TouchableOpacity style={styles.viewBtn}>
+                  <TouchableOpacity
+                    style={styles.viewBtn}
+                    onPress={() => handleDispatchDetails(service_id)}
+                  >
                     <Text
                       style={{
                         color: "#007bff",

@@ -24,7 +24,7 @@ const HomePage = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <ServiceCard data={recommendedServices} />
+      <ServiceCard navigation={navigation} data={recommendedServices} />
     </View>
   );
 };
