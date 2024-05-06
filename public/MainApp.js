@@ -17,7 +17,6 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainApp = () => {
   const { isLogin } = useGlobalContext();
-  const { wishList } = useWishListContext();
   if (isLogin) {
     return (
       <NavigationContainer>
@@ -41,11 +40,6 @@ const MainApp = () => {
         >
           <Tab.Screen
             options={{ headerShown: false }}
-            name="wishlist"
-            component={WishListPage}
-          />
-          <Tab.Screen
-            options={{ headerShown: false }}
             name="home"
             component={HomePage}
           />
@@ -53,6 +47,11 @@ const MainApp = () => {
             options={{ headerShown: false }}
             name="discover"
             component={DiscoverPage}
+          />
+          <Tab.Screen
+            options={{ headerShown: false }}
+            name="wishlist"
+            component={WishListPage}
           />
           <Tab.Screen
             options={{ headerShown: false }}

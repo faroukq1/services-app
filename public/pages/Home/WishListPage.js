@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Touchable,
+} from "react-native";
 import React, { useState } from "react";
 import { useWishListContext } from "../../contextapi/useWishListContext";
 import PictureContainer from "../../component/PictureContainer";
@@ -6,6 +12,8 @@ import ServiceCategory from "../../component/ServiceCategory";
 import WishListSectionButtons from "../../component/WishListSectionButtons";
 import WishListServiceName from "../../component/WishListServiceName";
 import AboutService from "../../component/AboutService";
+import ServiceGallery from "../../component/ServiceGalery";
+import ServiceReview from "../../component/ServiceReview";
 
 const WishListPage = ({ navigation }) => {
   const { serviceData } = useWishListContext();
@@ -14,9 +22,40 @@ const WishListPage = ({ navigation }) => {
     gallery: false,
     reviews: false,
   });
+
+  if (!serviceData.user_id) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          gap: 10,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          Please select a services
+        </Text>
+        <TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: "white",
+              backgroundColor: "#1976D2",
+              padding: 20,
+              borderRadius: 10,
+            }}
+            onPress={() => navigation.navigate("discover")}
+          >
+            Discover Services
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   const {
-    service_id,
-    user_id,
     service_name,
     service_description,
     service_category,
@@ -29,7 +68,7 @@ const WishListPage = ({ navigation }) => {
   } = serviceData;
   return (
     <View style={styles.container}>
-      <PictureContainer />
+      <PictureContainer navigation={navigation} />
       <ServiceCategory
         service_category={service_category}
         service_rating={service_rating}
@@ -46,11 +85,15 @@ const WishListPage = ({ navigation }) => {
           user_name={user_name}
         />
       )}
+
+      {section.gallery && <ServiceGallery />}
+      {section.reviews && <ServiceReview />}
+
       <View style={styles.buy}>
         <View style={styles.price}>
           <Text style={styles.priceTitle}>Total Price</Text>
           <Text style={{ fontWeight: 600, fontSize: 18 }}>
-            ${service_price} /h
+            ${service_price}/h
           </Text>
         </View>
         <TouchableOpacity style={styles.btn}>

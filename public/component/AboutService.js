@@ -37,7 +37,9 @@ const AboutService = ({ profile_image, user_name, service_description }) => {
 };
 
 const styles = StyleSheet.create({
-  about: {},
+  about: {
+    flex: 1,
+  },
   img: {
     width: 35,
     height: 35,
@@ -52,7 +54,8 @@ const styles = StyleSheet.create({
   },
 
   serviceDescription: {
-    padding: 20,
+    marginVertical: 15,
+    paddingHorizontal: 20,
     gap: 5,
   },
 });

@@ -5,12 +5,10 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  useWindowDimensions,
 } from "react-native";
 import React from "react";
 
-const PictureContainer = () => {
-  const { height } = useWindowDimensions();
+const PictureContainer = ({ navigation }) => {
   return (
     <View style={styles.pictureContainer}>
       <View style={styles.header}>
@@ -19,7 +17,7 @@ const PictureContainer = () => {
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <Image style={styles.img} source={require("../assets/heart.png")} />
+          <Image style={styles.img} source={require("../assets/star.png")} />
         </TouchableOpacity>
       </View>
       <Image
@@ -27,36 +25,32 @@ const PictureContainer = () => {
         source={require("../assets/defaultservicepic.jpg")}
       />
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.serviceImages}
-      >
-        {[1, 2, 3, 4, 5, 6, 7].map((_, i) => {
-          return (
-            <TouchableOpacity key={i}>
-              <Image
-                style={styles.previewImg}
-                source={require("../assets/defaultservicepic.jpg")}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      <View style={styles.serviceImages}>
+        <View style={{ flexDirection: "row", gap: 3 }}>
+          {[1, 2, 3, 4, 5].map((_, i) => {
+            return (
+              <TouchableOpacity key={i}>
+                <Image
+                  style={styles.previewImg}
+                  source={require("../assets/defaultservicepic.jpg")}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   pictureContainer: {
-    flex: 0.7,
-    borderWidth: 2,
-    backgroundColor: "white",
+    flex: 0.9,
+    marginBottom: 10,
   },
   header: {
     position: "relative",
     zIndex: 10,
-    backgroundColor: "transparent",
     height: 64,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -69,26 +63,27 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   img: {
-    padding: 20,
     borderRadius: 100,
-    width: 0,
-    height: 0,
+    width: 30,
+    height: 30,
   },
   serviceImages: {
+    width: "100%",
+    borderRadius: 5,
     position: "absolute",
     padding: 3,
     bottom: 15,
-    left: 7,
-    backgroundColor: "white",
     flexDirection: "row",
+    justifyContent: "center",
     gap: 3,
-    height: 64,
-    justifyContent: "space-between",
+    height: 60,
     overflow: "hidden",
   },
   previewImg: {
+    borderWidth: 2,
+    borderColor: "#1976D2",
     borderRadius: 5,
-    width: 100,
+    width: 65,
     height: "100%",
   },
 });

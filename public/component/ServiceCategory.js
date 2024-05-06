@@ -21,7 +21,7 @@ const ServiceCategory = ({ service_category, service_rating }) => {
 
 const styles = StyleSheet.create({
   category: {
-    flex: 0.1,
+    flex: 0.15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
