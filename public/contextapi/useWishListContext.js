@@ -5,7 +5,7 @@ const appWishListContext = createContext();
 export const AppWishListProvider = ({ children }) => {
   const [serviceID, setServiceID] = useState(null);
   const [serviceData, setServiceData] = useState({});
-
+  const [orderData, setOrderData] = useState({});
   useEffect(() => {
     const fetchServiceData = async () => {
       try {
