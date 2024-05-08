@@ -25,7 +25,7 @@ const Categories = () => {
         {categoriesList.map((name, index) => {
           return (
             <TouchableOpacity
-              onPress={() => setSelectedCategorie(name || "All")}
+              onPress={() => setSelectedCategorie(name)}
               key={index}
               style={[
                 styles.singleCategory,

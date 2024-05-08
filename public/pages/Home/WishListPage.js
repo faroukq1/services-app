@@ -96,7 +96,10 @@ const WishListPage = ({ navigation }) => {
             ${service_price}/h
           </Text>
         </View>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("buy")}
+        >
           <Text style={styles.btnText}>Buy Now</Text>
         </TouchableOpacity>
       </View>

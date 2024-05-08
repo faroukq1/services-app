@@ -97,14 +97,14 @@ const ServiceCard = ({ data, navigation }) => {
 const styles = StyleSheet.create({
   recommendedservicesCard: {
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 15,
     width: "100%",
     justifyContent: "space-evenly",
     backgroundColor: "#ffdab9",
-    gap: 20,
+    gap: 5,
   },
   descriptionContainer: {
-    padding: 15,
+    padding: 10,
     justifyContent: "flex-start",
     alignItems: "center",
   },
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    gap: 10,
   },
   viewBtn: {
     borderRadius: 5,
@@ -132,21 +131,21 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "#1976d2",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
   },
   description: {
-    marginTop: 10,
+    marginTop: 5,
     width: "100%",
     gap: 20,
-    paddingVertical: 10,
+    paddingTop: 10,
   },
   nameText: {
     color: "#333333",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 15,
   },
   descText: {
-    lineHeight: 20,
+    lineHeight: 15,
     color: "#666666",
   },
 });

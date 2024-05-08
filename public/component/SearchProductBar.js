@@ -11,7 +11,7 @@ const SearchProductBar = ({ setSearchFunction }) => {
   const handleInputChange = (event) => {
     const value = event.nativeEvent.text;
     setInputValue(value);
-    debounceInputValue(value);
+    debounceInputValue(inputValue);
   };
   return (
     <View style={styles.container}>

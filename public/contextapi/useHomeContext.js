@@ -15,6 +15,15 @@ export const AppHomeProvider = ({ children }) => {
           "/api/services/recomend/highrating"
         );
         const data = response.data;
+
+        if (selectedCategorie !== "All") {
+          const filtredServicesList = data.filter(
+            (item) => item.service_category === selectedCategorie
+          );
+          setRecommendedServices(filtredServicesList);
+          return;
+        }
+
         if (searchRecommendedServices.length !== "") {
           const filtredServicesList = data.filter((item) => {
             return item.service_name
@@ -24,14 +33,6 @@ export const AppHomeProvider = ({ children }) => {
           setRecommendedServices(filtredServicesList);
           return;
         }
-        if (selectedCategorie === "All") {
-          setRecommendedServices(data);
-          return;
-        }
-        const filtredServicesList = data.filter(
-          (item) => item.service_category === selectedCategorie
-        );
-        setRecommendedServices(filtredServicesList);
       } catch (error) {
         console.log(error);
       }

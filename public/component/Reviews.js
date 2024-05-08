@@ -20,7 +20,10 @@ const Review = ({ value }) => {
 };
 const Reviews = () => {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+    >
       {[1, 2, 3, 4, 5].map((_, i) => {
         return <Review key={i} />;
       })}
@@ -31,6 +34,7 @@ const Reviews = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
+    paddingBottom: 90,
     gap: 10,
   },
   reviewContainer: {

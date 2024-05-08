@@ -122,7 +122,7 @@ const recomendService = async (req, res) => {
       "SELECT * FROM services WHERE service_rating = 5"
     );
     const data = response[0];
-    res.status(200).send(data.slice(0, 3));
+    res.status(200).send(data);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

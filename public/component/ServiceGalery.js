@@ -22,7 +22,10 @@ const ServiceGallery = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView contentContainerStyle={styles.imageContainer}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.imageContainer}
+      >
         {[1, 2, 3, 4, 5, 6].map((_, i) => {
           return (
             <Image
@@ -49,6 +52,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     padding: 20,
+    paddingBottom: 90,
     flexWrap: "wrap",
     flexDirection: "row",
     gap: 10,

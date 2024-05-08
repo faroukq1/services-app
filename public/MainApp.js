@@ -13,6 +13,7 @@ import WishListPage from "./pages/Home/WishListPage";
 import AccountPage from "./pages/Home/AccountPage";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useWishListContext } from "./contextapi/useWishListContext";
+import BuyPage from "./pages/Home/BuyPage";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainApp = () => {
@@ -20,45 +21,33 @@ const MainApp = () => {
   if (isLogin) {
     return (
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-
-              if (route.name === "home") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "discover") {
-                iconName = focused ? "search" : "search-outline";
-              } else if (route.name === "wishlist") {
-                iconName = focused ? "heart" : "heart-outline";
-              } else if (route.name === "account") {
-                iconName = focused ? "person" : "person-outline";
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-          })}
-        >
-          <Tab.Screen
+        <Stack.Navigator>
+          <Stack.Screen
             options={{ headerShown: false }}
             name="home"
             component={HomePage}
           />
-          <Tab.Screen
+          <Stack.Screen
             options={{ headerShown: false }}
             name="discover"
             component={DiscoverPage}
           />
-          <Tab.Screen
+          <Stack.Screen
             options={{ headerShown: false }}
             name="wishlist"
             component={WishListPage}
           />
-          <Tab.Screen
+          <Stack.Screen
             options={{ headerShown: false }}
             name="account"
             component={AccountPage}
           />
-        </Tab.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="buy"
+            component={BuyPage}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
