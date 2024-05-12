@@ -14,9 +14,11 @@ import WishListServiceName from "../../component/WishListServiceName";
 import AboutService from "../../component/AboutService";
 import ServiceGallery from "../../component/ServiceGalery";
 import ServiceReview from "../../component/ServiceReview";
+import BuyModal from "../../component/BuyModal";
 
 const WishListPage = ({ navigation }) => {
   const { serviceData } = useWishListContext();
+  const [buyModalVisible, setBuyModalVisible] = useState(false);
   const [section, setSection] = useState({
     about: true,
     gallery: false,
@@ -98,11 +100,16 @@ const WishListPage = ({ navigation }) => {
         </View>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate("buy")}
+          onPress={() => setBuyModalVisible(true)}
         >
           <Text style={styles.btnText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
+
+      <BuyModal
+        buyModalVisible={buyModalVisible}
+        setBuyModalVisible={setBuyModalVisible}
+      />
     </View>
   );
 };

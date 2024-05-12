@@ -1,11 +1,8 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
+import BuyModal from "../../component/BuyModal";
 
 const BuyPage = () => {
-  return (
-    <View>
-      <Text>hello from buy page </Text>
-    </View>
-  );
+  return <View></View>;
 };
 export default BuyPage;
