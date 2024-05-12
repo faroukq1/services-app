@@ -20,3 +20,44 @@ export const sortingHelperFuntion = (data, option) => {
       return data;
   }
 };
+
+export const renderCurrentWeek = () => {
+  const currentDay = new Date();
+  const currentDayOfWeek = currentDay.getDay();
+  const startDay = new Date(currentDay);
+  startDay.setDate(currentDay.getDate() - currentDayOfWeek);
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(startDay);
+    day.setDate(day.getDate() + i);
+
+    const dayName = day.toLocaleDateString("en-Us", { weekday: "short" });
+    const dayNumber = day.getDate();
+    const Month = day.getMonth();
+
+    weekDays.push({
+      id: i,
+      name: dayName,
+      month: monthNames[Month],
+      number: dayNumber,
+    });
+  }
+
+  return weekDays;
+};
