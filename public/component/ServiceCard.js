@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     width: "100%",
     height: 200,
+    resizeMode: "cover",
   },
   actions: {
     flexDirection: "row",

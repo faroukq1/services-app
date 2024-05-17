@@ -73,7 +73,7 @@ const createService = async (req, res) => {
     res.status(500).send({ error: "Failed to create service" });
   }
 };
-
+  
 const deleteService = async (req, res) => {
   try {
     const id = parseInt(req.params.id);

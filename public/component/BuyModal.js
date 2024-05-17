@@ -17,6 +17,12 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
     day: week[0],
     time: dayTimes[0],
   });
+
+  const handleSubmitOrder = () => {
+    setBuyModalVisible(false);
+    navigation.navigate("buy");
+  };
+
   return (
     <Modal animationType="fade" transparent={true} visible={buyModalVisible}>
       <View style={styles.container}>
@@ -38,8 +44,15 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
                     setBuyOptions({ ...buyOptions, day: week[id] })
                   }
                 >
-                  <Text>{name}</Text>
-                  <Text style={{ fontWeight: "bold" }}>
+                  <Text style={buyOptions.day.id === id && { color: "white" }}>
+                    {name}
+                  </Text>
+                  <Text
+                    style={[
+                      { fontWeight: "bold" },
+                      buyOptions.day.id === id && { color: "white" },
+                    ]}
+                  >
                     {month + " "}
                     {number}
                   </Text>
@@ -63,7 +76,14 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
                   key={index}
                   onPress={() => setBuyOptions({ ...buyOptions, time: item })}
                 >
-                  <Text style={{ fontWeight: "bold" }}>{item}</Text>
+                  <Text
+                    style={[
+                      { fontWeight: "bold" },
+                      buyOptions.time === item && { color: "white" },
+                    ]}
+                  >
+                    {item}
+                  </Text>
                 </TouchableOpacity>
               );
             })}
@@ -79,7 +99,7 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
 
             <TouchableOpacity
               style={[styles.btn, { backgroundColor: "#1976D2" }]}
-              onPress={() => navigation.navigate("buy")}
+              onPress={handleSubmitOrder}
             >
               <Text style={{ color: "white" }}>Buy</Text>
             </TouchableOpacity>

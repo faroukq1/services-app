@@ -33,6 +33,7 @@ CREATE TABLE orders (
     user_id INT,
     service_id INT,
     order_date DATE NOT NULL,
+    order_time TIME DEFAULT '00:00:00',
     total_price DECIMAL(10,2) NOT NULL,
     payment_status INT DEFAULT 0,
     quantity INT NOT NULL CHECK (quantity >= 1),

@@ -53,6 +53,7 @@ export const renderCurrentWeek = () => {
 
     weekDays.push({
       id: i,
+      date: day.toISOString().substring(0, 10),
       name: dayName,
       month: monthNames[Month],
       number: dayNumber,

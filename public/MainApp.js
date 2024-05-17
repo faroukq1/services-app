@@ -6,16 +6,12 @@ import LoginPage from "./pages/auth/LoginPage";
 import AuthPage from "./pages/auth/AuthPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { useGlobalContext } from "./contextapi/useGlobalContext";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomePage from "./pages/Home/HomePage";
 import DiscoverPage from "./pages/Home/DiscoverPage";
 import WishListPage from "./pages/Home/WishListPage";
 import AccountPage from "./pages/Home/AccountPage";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { useWishListContext } from "./contextapi/useWishListContext";
 import BuyPage from "./pages/Home/BuyPage";
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 const MainApp = () => {
   const { isLogin } = useGlobalContext();
   if (isLogin) {
