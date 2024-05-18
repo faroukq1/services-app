@@ -3,27 +3,12 @@ import React, { useState } from "react";
 import { Image } from "react-native";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import PaymentMethod from "../../component/PaymentMethod";
+import { morePaymentOptions } from "../../util/DATA";
+import ConfirmPaymentModal from "../../component/ConfirmPaymentModal";
 
 const BuyPage = () => {
   const navigation = useNavigation();
-  const morePaymentOptions = [
-    {
-      id: 1,
-      name: "Paypal",
-      img: require("../../assets/paypal.png"),
-    },
-    {
-      id: 2,
-      name: "ApplePay",
-      img: require("../../assets/apple.png"),
-    },
-    {
-      id: 3,
-      name: "GooglePay",
-      img: require("../../assets/google.png"),
-    },
-  ];
-
+  const [confirmModal, setConfirmModal] = useState(false);
   const handlePayment = () => {
     navigation.navigate("home");
   };
@@ -72,6 +57,7 @@ const BuyPage = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      <ConfirmPaymentModal visible={confirmModal} />
     </View>
   );
 };
