@@ -14,6 +14,26 @@ const orders = async (req, res) => {
   }
 };
 
+const ordersByUserId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (isNaN(id) || id <= 0) {
+      res.status(400).send("there is no order match this id");
+      return;
+    }
+    const [orders] = await pool.query("SELECT * FROM orders WHERE user_id=?", [
+      id,
+    ]);
+    if (orders.affectedRows === 0) {
+      res.status(404).send("order not found");
+      return;
+    }
+    res.status(200).send(orders);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 const order = async (req, res) => {
   try {
     const id = req.params.id;
@@ -120,4 +140,6 @@ module.exports = {
   order,
   createOrder,
   updateOrder,
+  ordersByUserId,
+  deleteOrder,
 };

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import useFetchHook from "../util/useFetchHook";
 import { filterOptionList, sortingOptionsList } from "../util/DATA";
-
 const appDiscoverContext = createContext();
 
 export const AppDiscoverProvider = ({ children }) => {

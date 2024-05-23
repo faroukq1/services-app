@@ -1,7 +1,10 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import BuyPocketModal from "./BuyPocketModal";
+import { useHomeContext } from "../contextapi/useHomeContext";
 
 const HomeHeader = () => {
+  const { setOpenPocketModal } = useHomeContext();
   return (
     <View style={styles.headerContainer}>
       <TouchableOpacity>
@@ -11,9 +14,10 @@ const HomeHeader = () => {
         />
       </TouchableOpacity>
       <Text style={styles.headerText}>Home</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setOpenPocketModal(true)}>
         <Image style={styles.img} source={require("../assets/basket.png")} />
       </TouchableOpacity>
+      <BuyPocketModal />
     </View>
   );
 };
