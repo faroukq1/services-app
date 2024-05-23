@@ -38,46 +38,34 @@ const order = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const {
-      order_id,
       user_id,
       service_id,
       order_date,
+      order_time,
       total_price,
       payment_status,
       quantity,
       delivery_status,
     } = req.body;
-    if (
-      !order_id ||
-      !user_id ||
-      !service_id ||
-      !order_date ||
-      !total_price ||
-      !payment_status ||
-      !quantity ||
-      !delivery_status
-    ) {
-      res.status(400).send({ error: "Missing required fields" });
-      return;
-    }
+
     await pool.query(
-      `INSERT INTO orders (order_id,user_id,service_id,order_date
-        total_price,payment_status,quantity,delivery_status) VALUES (?,?,?,?,?,?,?,?)
-        `,
+      `INSERT INTO orders (user_id, service_id, order_date , order_time, total_price, payment_status, quantity, delivery_status) VALUES (?,?,?,?,?,?,?,?)`,
       [
-        order_id,
         user_id,
         service_id,
         order_date,
+        order_time,
         total_price,
         payment_status,
         quantity,
         delivery_status,
       ]
     );
+
+    res.status(200).send({ message: "order has been created" });
   } catch (error) {
     console.log("failed to create order :", error);
-    res.status(500).send({ message: "failed to create order" });
+    res.status(500).send({ message: error.message });
   }
 };
 

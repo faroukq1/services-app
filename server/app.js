@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);
 app.use("/api/services", upload.single("service"), servicesRoutes);
-app.use("/api/orders", ordersRoutes);
+app.use("/api/order", ordersRoutes);
 app.use("/api/auth", upload.single("avatar"), authentificationRoutes);
 app.use("api/servicesimages", upload.single("images"), servicesImagesRoutes);
 

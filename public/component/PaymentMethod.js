@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import { RadioButton } from "react-native-paper";
-import React from "react";
+import React, { useState } from "react";
+import RadioButton from "./RadioButton";
 
-const PaymentMethod = ({ paymentText, img, otherOptions }) => {
+const PaymentMethod = ({ paymentText, img, otherOptions, canChoose }) => {
+  const [selected, setSelected] = useState(false);
   return (
     <View style={styles.paymentChoise}>
       {!otherOptions && (
@@ -15,7 +16,9 @@ const PaymentMethod = ({ paymentText, img, otherOptions }) => {
           <Image style={styles.img} source={img} />
           <Text style={styles.paymentText}>{paymentText}</Text>
         </View>
-        <RadioButton />
+        {canChoose && (
+          <RadioButton selected={selected} setSelected={setSelected} />
+        )}
       </View>
     </View>
   );

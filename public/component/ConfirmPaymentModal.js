@@ -1,14 +1,24 @@
-import { View, Text, Modal, StyleSheet } from "react-native";
+import { View, Text, Modal, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import EReceiptScreen from "./EReceiptScreen";
 
-const ConfirmPaymentModal = ({ visible }) => {
+const ConfirmPaymentModal = ({ visible, setConfirmModal }) => {
   return (
     <Modal visible={visible} transparent={true} animationType="fade">
       <View style={styles.container}>
         <View style={styles.content}>
           <EReceiptScreen />
         </View>
+      </View>
+      <View>
+        <TouchableOpacity>
+          <Text
+            onPress={() => setConfirmModal(false)}
+            style={{ textAlign: "center", marginTop: 10 }}
+          >
+            Close
+          </Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );

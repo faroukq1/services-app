@@ -5,12 +5,32 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import PaymentMethod from "../../component/PaymentMethod";
 import { morePaymentOptions } from "../../util/DATA";
 import ConfirmPaymentModal from "../../component/ConfirmPaymentModal";
+import useFetchHook from "../../util/useFetchHook";
+import { useWishListContext } from "../../contextapi/useWishListContext";
+import Toast from "react-native-toast-message";
 
 const BuyPage = () => {
   const navigation = useNavigation();
   const [confirmModal, setConfirmModal] = useState(false);
-  const handlePayment = () => {
-    navigation.navigate("home");
+  const { orderInfo } = useWishListContext();
+  const handlePayment = async () => {
+    try {
+      const response = await useFetchHook.post(
+        "/api/order/postorder",
+        orderInfo
+      );
+      if (response.status === 200) {
+        [
+          Toast.show({
+            type: "success",
+            text1: "order placed successful",
+          }),
+        ];
+      }
+      navigation.navigate("home");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <View style={styles.container}>
@@ -25,6 +45,7 @@ const BuyPage = () => {
         <PaymentMethod
           paymentText="Cash"
           img={require("../../assets/cash.png")}
+          canChoose={true}
         />
         <PaymentMethod
           paymentText="Wallet"
@@ -57,7 +78,10 @@ const BuyPage = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <ConfirmPaymentModal visible={confirmModal} />
+      <ConfirmPaymentModal
+        visible={confirmModal}
+        setConfirmModal={setConfirmModal}
+      />
     </View>
   );
 };
@@ -94,7 +118,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   confirmBtn: {
-    backgroundColor: "#B4B4B8",
+    backgroundColor: "#005b96",
     padding: 15,
     borderRadius: 30,
     alignItems: "center",

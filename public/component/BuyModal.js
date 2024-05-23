@@ -10,6 +10,8 @@ import React, { useState } from "react";
 import { renderCurrentWeek } from "../util/helperFunctions";
 import { dayTimes } from "../util/DATA";
 import { useNavigation } from "@react-navigation/native";
+import { useWishListContext } from "../contextapi/useWishListContext";
+import { useGlobalContext } from "../contextapi/useGlobalContext";
 const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
   const week = renderCurrentWeek();
   const navigation = useNavigation();
@@ -17,10 +19,23 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
     day: week[0],
     time: dayTimes[0],
   });
-
+  const { serviceData, orderInfo, setOrderInfo } = useWishListContext();
+  const { userInformation } = useGlobalContext();
   const handleSubmitOrder = () => {
     setBuyModalVisible(false);
     navigation.navigate("buy");
+    setOrderInfo({
+      ...orderInfo,
+      user_id: userInformation.user_id,
+      service_id: serviceData.service_id,
+      order_date: buyOptions.day.date,
+      order_time: buyOptions.time,
+      total_price: serviceData.service_price,
+      payment_status: 0,
+      quantity: 1,
+      delivery_status: 0,
+    });
+    console.log(orderInfo);
   };
 
   return (
@@ -82,7 +97,7 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
                       buyOptions.time === item && { color: "white" },
                     ]}
                   >
-                    {item}
+                    {item.substring(0, 5)}
                   </Text>
                 </TouchableOpacity>
               );

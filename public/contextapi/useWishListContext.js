@@ -15,6 +15,7 @@ export const AppWishListProvider = ({ children }) => {
     quantity: 1,
     delivery_status: false,
   });
+  console.log(orderInfo);
   useEffect(() => {
     const fetchServiceData = async () => {
       try {
