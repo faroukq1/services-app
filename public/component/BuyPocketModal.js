@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { useOrdersContext } from "../contextapi/useOrdersContext";
 import { orderBy } from "lodash";
@@ -26,7 +27,10 @@ const BuyPocketModal = () => {
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.orderContainer}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.orderContainer}
+          >
             {myOrders.map((order, index) => {
               const {
                 order_date,
@@ -39,17 +43,49 @@ const BuyPocketModal = () => {
               const { serviceName, serviceCategory } = serviceDetails;
               return (
                 <View key={index} style={styles.order}>
-                  <Text>{serviceName}</Text>
-                  <Text>{serviceCategory}</Text>
-                  <Text>{order_date}</Text>
-                  <Text>{order_time}</Text>
-                  <Text>{total_price}</Text>
-                  <Text>{payment_status}</Text>
-                  <Text>{delivery_status}</Text>
+                  <Text>
+                    <Text style={{ fontWeight: "bold" }}>
+                      Service category :{" "}
+                    </Text>
+                    {serviceCategory}
+                  </Text>
+                  <Text>
+                    <Text style={{ fontWeight: "bold" }}>Service name : </Text>
+                    {serviceName}
+                  </Text>
+                  <Text>
+                    <Text style={{ fontWeight: "bold" }}>Order date : </Text>
+                    {order_date.substring(0, 10)}
+                  </Text>
+                  <Text>
+                    <Text style={{ fontWeight: "bold" }}>Order time : </Text>
+                    {order_time}
+                  </Text>
+                  <Text>
+                    <Text style={{ fontWeight: "bold" }}>Total price : </Text>
+                    {total_price}
+                  </Text>
+                  <View style={styles.btnContainer}>
+                    <View style={[styles.btn, { backgroundColor: "blue" }]}>
+                      <Text style={{ color: "white" }}>
+                        {payment_status === 1 ? "Paid" : "Unpaid"}
+                      </Text>
+                    </View>
+                    <View style={[styles.btn, { backgroundColor: "green" }]}>
+                      <Text style={{ color: "white" }}>
+                        {delivery_status === 1 ? "Delivered" : "Pending"}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      style={[styles.btn, { backgroundColor: "red" }]}
+                    >
+                      <Text style={{ color: "white" }}>delete</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               );
             })}
-          </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -82,6 +118,24 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  order: {
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+    gap: 5,
+  },
+  btnContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 5,
+  },
+  btn: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 5,
   },
 });
 
