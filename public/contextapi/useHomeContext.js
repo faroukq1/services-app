@@ -8,7 +8,6 @@ export const AppHomeProvider = ({ children }) => {
   const [recommendedServices, setRecommendedServices] = useState([]);
   const [searchRecommendedServices, setSearchRecommendedServices] =
     useState("");
-  const [openPocketModal, setOpenPocketModal] = useState(false);
   useEffect(() => {
     const getRecommendedServices = async () => {
       try {
@@ -50,8 +49,6 @@ export const AppHomeProvider = ({ children }) => {
         setRecommendedServices,
         searchRecommendedServices,
         setSearchRecommendedServices,
-        openPocketModal,
-        setOpenPocketModal,
       }}
     >
       {children}

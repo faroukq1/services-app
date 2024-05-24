@@ -6,27 +6,49 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
-import { useHomeContext } from "../contextapi/useHomeContext";
 import { useOrdersContext } from "../contextapi/useOrdersContext";
-
+import { orderBy } from "lodash";
 const BuyPocketModal = () => {
-  const { openPocketModal, setOpenPocketModal } = useHomeContext();
-  const { myOrders } = useOrdersContext();
+  const { pocketModal, setPocketModal, myOrders } = useOrdersContext();
+  console.log(myOrders);
   return (
-    <Modal visible={openPocketModal} transparent={true} animationType="fade">
+    <Modal visible={pocketModal} transparent={true} animationType="fade">
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={{ fontSize: 20, fontWeight: "500" }}>
               Shopping card
             </Text>
-            <TouchableOpacity onPress={() => setOpenPocketModal(false)}>
+            <TouchableOpacity onPress={() => setPocketModal(false)}>
               <Image
                 style={styles.img}
                 source={require("../assets/back.png")}
               />
             </TouchableOpacity>
+          </View>
+          <View style={styles.orderContainer}>
+            {myOrders.map((order, index) => {
+              const {
+                order_date,
+                order_time,
+                total_price,
+                payment_status,
+                delivery_status,
+                serviceDetails,
+              } = order;
+              const { serviceName, serviceCategory } = serviceDetails;
+              return (
+                <View key={index} style={styles.order}>
+                  <Text>{serviceName}</Text>
+                  <Text>{serviceCategory}</Text>
+                  <Text>{order_date}</Text>
+                  <Text>{order_time}</Text>
+                  <Text>{total_price}</Text>
+                  <Text>{payment_status}</Text>
+                  <Text>{delivery_status}</Text>
+                </View>
+              );
+            })}
           </View>
         </View>
       </View>

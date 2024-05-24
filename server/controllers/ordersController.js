@@ -17,10 +17,6 @@ const orders = async (req, res) => {
 const ordersByUserId = async (req, res) => {
   try {
     const id = req.params.id;
-    if (isNaN(id) || id <= 0) {
-      res.status(400).send("there is no order match this id");
-      return;
-    }
     const [orders] = await pool.query("SELECT * FROM orders WHERE user_id=?", [
       id,
     ]);

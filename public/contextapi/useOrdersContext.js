@@ -9,24 +9,43 @@ export const OrdersProvider = ({ children }) => {
   const [myOrders, setMyOrders] = useState([]);
   const { userInformation } = useGlobalContext();
   const { allServices } = useDiscoverContext();
+  const [pocketModal, setPocketModal] = useState(false);
   const { user_id } = userInformation;
+
   useEffect(() => {
     const fetchMyOrders = async () => {
       try {
         const response = await useFetchHook(`/api/order/userorders/${user_id}`);
         const data = response.data;
-        let services = data.map(({ service_id }) => service_id);
-        services = Array.from(new Set(allServices));
+        const orderList = [];
+        for (let i = 0; i < data.length; i++) {
+          const service_id = data[i].service_id;
+          const item = data[i];
+
+          for (let j = 0; j < allServices.length; j++) {
+            if (service_id === allServices[j].service_id) {
+              const serviceDetails = {
+                serviceName: allServices[j].service_name,
+                serviceCategory: allServices[j].service_category,
+              };
+              orderList.push({ ...item, serviceDetails });
+            }
+          }
+        }
+
+        setMyOrders(orderList);
       } catch (error) {
         console.log(error.message);
       }
     };
 
     fetchMyOrders();
-  }, []);
+  }, [pocketModal]);
 
   return (
-    <ordersProvider.Provider value={{ myOrders, setMyOrders }}>
+    <ordersProvider.Provider
+      value={{ myOrders, setMyOrders, pocketModal, setPocketModal }}
+    >
       {children}
     </ordersProvider.Provider>
   );
