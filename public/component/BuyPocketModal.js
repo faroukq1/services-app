@@ -8,10 +8,26 @@ import {
   ScrollView,
 } from "react-native";
 import { useOrdersContext } from "../contextapi/useOrdersContext";
-import { orderBy } from "lodash";
+import useFetchHook from "../util/useFetchHook";
+import Toast from "react-native-toast-message";
 const BuyPocketModal = () => {
-  const { pocketModal, setPocketModal, myOrders } = useOrdersContext();
-  console.log(myOrders);
+  const { pocketModal, setPocketModal, myOrders, setMyOrders } =
+    useOrdersContext();
+  const handleDeleteOrder = async (id) => {
+    const newOrderList = myOrders.filter((item) => item.order_id !== id);
+    setMyOrders(newOrderList);
+    try {
+      const response = await useFetchHook.delete(`api/order/${id}`);
+      if (response.status === 200) {
+        Toast.show({
+          type: "success",
+          text1: "order deleted",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <Modal visible={pocketModal} transparent={true} animationType="fade">
       <View style={styles.container}>
@@ -77,6 +93,7 @@ const BuyPocketModal = () => {
                       </Text>
                     </View>
                     <TouchableOpacity
+                      onPress={() => handleDeleteOrder(order.order_id)}
                       style={[styles.btn, { backgroundColor: "red" }]}
                     >
                       <Text style={{ color: "white" }}>delete</Text>

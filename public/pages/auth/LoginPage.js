@@ -13,10 +13,11 @@ import axios from "axios";
 import { useGlobalContext } from "../../contextapi/useGlobalContext";
 
 const LoginPage = ({ navigation }) => {
-  const { setIsLogin, setUserInformation } = useGlobalContext();
+  const { setIsLogin, setUserInformation, setAccountDetailsById } =
+    useGlobalContext();
   const [loginResult, setLoginResult] = useState({
-    email: "",
-    user_password: "",
+    email: "faroukq1@gmail.com",
+    user_password: "123",
   });
 
   const getUserInformation = async (id) => {
@@ -25,6 +26,7 @@ const LoginPage = ({ navigation }) => {
       const response = await axios.get(ACCOUNT_DETAILS_URL);
       const data = response.data.data[0];
       setUserInformation(data);
+      setAccountDetailsById(data.user_id);
     } catch (error) {
       console.log(error);
     }

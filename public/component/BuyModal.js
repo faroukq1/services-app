@@ -35,7 +35,6 @@ const BuyModal = ({ buyModalVisible, setBuyModalVisible }) => {
       quantity: 1,
       delivery_status: 0,
     });
-    console.log(orderInfo);
   };
 
   return (

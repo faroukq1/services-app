@@ -85,49 +85,51 @@ const createOrder = async (req, res) => {
   }
 };
 
-const updateOrder = async (req, res) => {
+const deleteOrder = async (req, res) => {
   try {
-    const order_id = req.params.id;
-    if (isNaN(order_id) || order_id <= 0) {
+    const id = req.params.id;
+    const response = await pool.query("DELETE FROM orders WHERE order_id=?", [
+      id,
+    ]);
+    if (response.affectedRows === 0) {
       res.status(404).send({ message: "order not found" });
       return;
     }
-    const { column, newData } = req.body;
-    if (!column || !newData) {
-      res.status(404).send({ message: "missing required fields" });
-      return;
-    }
-    const [result] = await pool.query(
-      `UPDATE orders SET ${column}=? WHERE order_id=?`,
-      [newData, order_id]
-    );
-    if (result.affectedRows === 0) {
-      res.status(404).send({ message: "there is no order match this id" });
-      return;
-    }
-    req.status(200).send({ result });
-  } catch (error) {
-    console.log("failed update order : ", error);
-    res.status(500).send({ message: "failed to update order" });
-  }
-};
-
-const deleteOrder = async (req, res) => {
-  try {
-    const order_id = req.params.id;
-    if (isNaN(order_id) || order_id <= 0) {
-      res.status(400).send("invalid id");
-      return;
-    }
-    const [order] = pool.query("DELETE FROM orders WHERE order_id=?", order_id);
-    if (order.affectedRows === 0) {
-      res.status(404).send({ message: "there is no order match this id" });
-      return;
-    }
-    res.status(200).send({ message: "order has been deleted", order });
+    res.status(200).send({ message: "order has been deleted" });
   } catch (error) {
     console.log("failed to delete order : ", error);
     res.status(500).send({ message: "failed to delete order" });
+  }
+};
+
+const notificationOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      `
+  SELECT users.user_id AS service_provider,
+  services.service_id,
+  orders.user_id AS orders_buyer_id,
+  orders.order_date , orders.order_time 
+  , orders.total_price , orders.payment_status,
+  services.service_name
+  FROM users
+  INNER JOIN services ON users.user_id = services.user_id
+  INNER JOIN orders ON services.service_id = orders.service_id
+  WHERE users.user_id = ?;
+    `,
+      [id]
+    );
+
+    if (response.affectedRows === 0) {
+      res.status(404).send({ message: "order not found" });
+      return;
+    }
+    const data = response[0];
+    res.status(200).send(data);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
   }
 };
 
@@ -135,7 +137,7 @@ module.exports = {
   orders,
   order,
   createOrder,
-  updateOrder,
   ordersByUserId,
   deleteOrder,
+  notificationOrder,
 };

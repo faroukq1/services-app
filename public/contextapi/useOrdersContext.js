@@ -10,8 +10,9 @@ export const OrdersProvider = ({ children }) => {
   const { userInformation } = useGlobalContext();
   const { allServices } = useDiscoverContext();
   const [pocketModal, setPocketModal] = useState(false);
+  const [notificationModal, setNotificationModal] = useState(false);
+  const [notifcationData, setNotificationData] = useState([]);
   const { user_id } = userInformation;
-
   useEffect(() => {
     const fetchMyOrders = async () => {
       try {
@@ -42,9 +43,33 @@ export const OrdersProvider = ({ children }) => {
     fetchMyOrders();
   }, [pocketModal]);
 
+  useEffect(() => {
+    const getUserOrderAsNotification = async () => {
+      try {
+        const response = await useFetchHook(
+          `/api/order/notification/${user_id}`
+        );
+        const data = response.data;
+        setNotificationData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    getUserOrderAsNotification();
+  }, [notificationModal]);
+
   return (
     <ordersProvider.Provider
-      value={{ myOrders, setMyOrders, pocketModal, setPocketModal }}
+      value={{
+        myOrders,
+        setMyOrders,
+        pocketModal,
+        setPocketModal,
+        notificationModal,
+        setNotificationModal,
+        notifcationData,
+      }}
     >
       {children}
     </ordersProvider.Provider>

@@ -73,7 +73,7 @@ const createService = async (req, res) => {
     res.status(500).send({ error: "Failed to create service" });
   }
 };
-  
+
 const deleteService = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -161,6 +161,19 @@ const servicePicture = async (req, res) => {
   }
 };
 
+const getUserServices = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      "SELECT * FROM services WHERE user_id = ?",
+      [id]
+    );
+    res.status(200).send(response[0]);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 module.exports = {
   getServices,
   getService,
@@ -170,4 +183,5 @@ module.exports = {
   servicePicture,
   recomendService,
   getServicesByCategory,
+  getUserServices,
 };

@@ -11,6 +11,7 @@ import DiscoverPage from "./pages/Home/DiscoverPage";
 import WishListPage from "./pages/Home/WishListPage";
 import AccountPage from "./pages/Home/AccountPage";
 import BuyPage from "./pages/Home/BuyPage";
+import Dashboard from "./pages/Home/Dashboard";
 const Stack = createNativeStackNavigator();
 const MainApp = () => {
   const { isLogin } = useGlobalContext();
@@ -25,8 +26,8 @@ const MainApp = () => {
           />
           <Stack.Screen
             options={{ headerShown: false }}
-            name="discover"
-            component={DiscoverPage}
+            name="account"
+            component={AccountPage}
           />
           <Stack.Screen
             options={{ headerShown: false }}
@@ -35,13 +36,18 @@ const MainApp = () => {
           />
           <Stack.Screen
             options={{ headerShown: false }}
-            name="account"
-            component={AccountPage}
+            name="discover"
+            component={DiscoverPage}
           />
           <Stack.Screen
             options={{ headerShown: false }}
             name="buy"
             component={BuyPage}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="dashboard"
+            component={Dashboard}
           />
         </Stack.Navigator>
       </NavigationContainer>

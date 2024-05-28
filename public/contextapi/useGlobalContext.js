@@ -5,7 +5,7 @@ const appContext = createContext();
 export const AppProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [userInformation, setUserInformation] = useState({});
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [accountDetailsById, setAccountDetailsById] = useState(-1);
   return (
     <appContext.Provider
       value={{
@@ -13,8 +13,8 @@ export const AppProvider = ({ children }) => {
         setIsLogin,
         userInformation,
         setUserInformation,
-        isDarkTheme,
-        setIsDarkTheme,
+        accountDetailsById,
+        setAccountDetailsById,
       }}
     >
       {children}

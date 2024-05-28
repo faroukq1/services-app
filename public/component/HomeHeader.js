@@ -2,12 +2,13 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import BuyPocketModal from "./BuyPocketModal";
 import { useOrdersContext } from "../contextapi/useOrdersContext";
+import NotificationModal from "./NotificationModal";
 
 const HomeHeader = () => {
-  const { setPocketModal } = useOrdersContext();
+  const { setPocketModal, setNotificationModal } = useOrdersContext();
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setNotificationModal(true)}>
         <Image
           style={styles.img}
           source={require("../assets/notification.png")}
@@ -18,6 +19,7 @@ const HomeHeader = () => {
         <Image style={styles.img} source={require("../assets/basket.png")} />
       </TouchableOpacity>
       <BuyPocketModal />
+      <NotificationModal />
     </View>
   );
 };
