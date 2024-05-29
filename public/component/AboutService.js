@@ -1,7 +1,20 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useGlobalContext } from "../contextapi/useGlobalContext";
 
-const AboutService = ({ profile_image, user_name, service_description }) => {
+const AboutService = ({
+  profile_image,
+  user_name,
+  service_description,
+  user_id,
+}) => {
+  const navigation = useNavigation();
+  const { setAccountDetailsById } = useGlobalContext();
+  const handleOpenProfile = () => {
+    setAccountDetailsById(user_id);
+    navigation.navigate("account");
+  };
   return (
     <View style={styles.about}>
       <View style={styles.serviceDescription}>
@@ -11,7 +24,7 @@ const AboutService = ({ profile_image, user_name, service_description }) => {
 
       <View style={styles.provider}>
         <View style={{ flexDirection: "row", gap: 15, alignItems: "center" }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleOpenProfile()}>
             <Image
               style={styles.img}
               source={require("../assets/avatar.png")}

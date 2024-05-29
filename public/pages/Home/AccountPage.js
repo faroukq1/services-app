@@ -15,10 +15,15 @@ import { useWishListContext } from "../../contextapi/useWishListContext";
 const AccountPage = () => {
   const navigation = useNavigation();
   const [editSetting, setEditSetting] = useState(false);
-  const { accountDetailsById, userInformation } = useGlobalContext();
+  const { accountDetailsById, userInformation, setAccountDetailsById } =
+    useGlobalContext();
   const [accountPageData, setAccountPageData] = useState([]);
   const [accountServices, setAccountServices] = useState([]);
   const { setServiceID } = useWishListContext();
+  const handleBack = () => {
+    setAccountDetailsById(userInformation.user_id);
+    navigation.navigate("home");
+  };
   useEffect(() => {
     const getAccountDetailsById = async () => {
       try {
@@ -73,7 +78,7 @@ const AccountPage = () => {
                 gap: 20,
               }}
             >
-              <TouchableOpacity onPress={() => navigation.navigate("home")}>
+              <TouchableOpacity onPress={handleBack}>
                 <Image
                   source={require("../../assets/back.png")}
                   style={[

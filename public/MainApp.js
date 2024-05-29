@@ -12,44 +12,90 @@ import WishListPage from "./pages/Home/WishListPage";
 import AccountPage from "./pages/Home/AccountPage";
 import BuyPage from "./pages/Home/BuyPage";
 import Dashboard from "./pages/Home/Dashboard";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import AddService from "./component/AddService";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+const PrivateStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="home"
+        component={HomePage}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="buy"
+        component={BuyPage}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="dashboard"
+        component={Dashboard}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="wishlist"
+        component={WishListPage}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const MainApp = () => {
   const { isLogin } = useGlobalContext();
   if (isLogin) {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === "Home") {
+                iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "discover") {
+                iconName = focused ? "search" : "search-outline";
+              } else if (route.name === "add") {
+                iconName = focused ? "add-circle" : "add-circle-outline";
+              } else if (route.name === "account") {
+                iconName = focused ? "person" : "person-outline";
+              }
+
+              return <Ionicons name={iconName} size={30} color="white" />;
+            },
+            tabBarShowLabel: false,
+            tabBarStyle: {
+              backgroundColor: "#5C88C4",
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            },
+          })}
+        >
+          <Tab.Screen
             options={{ headerShown: false }}
-            name="home"
-            component={HomePage}
+            name="Home"
+            component={PrivateStack}
           />
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="account"
-            component={AccountPage}
-          />
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="wishlist"
-            component={WishListPage}
-          />
-          <Stack.Screen
+          <Tab.Screen
             options={{ headerShown: false }}
             name="discover"
             component={DiscoverPage}
           />
-          <Stack.Screen
+          <Tab.Screen
             options={{ headerShown: false }}
-            name="buy"
-            component={BuyPage}
+            name="add"
+            component={AddService}
           />
-          <Stack.Screen
+          <Tab.Screen
             options={{ headerShown: false }}
-            name="dashboard"
-            component={Dashboard}
+            name="account"
+            component={AccountPage}
           />
-        </Stack.Navigator>
+        </Tab.Navigator>
       </NavigationContainer>
     );
   }

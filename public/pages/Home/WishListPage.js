@@ -58,6 +58,7 @@ const WishListPage = ({ navigation }) => {
     );
   }
   const {
+    user_id,
     service_name,
     service_description,
     service_category,
@@ -85,6 +86,7 @@ const WishListPage = ({ navigation }) => {
           service_name={service_name}
           service_description={service_description}
           user_name={user_name}
+          user_id={user_id}
         />
       )}
 
