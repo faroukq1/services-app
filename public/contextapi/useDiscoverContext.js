@@ -15,6 +15,7 @@ export const AppDiscoverProvider = ({ children }) => {
     Location: "",
     Category: "",
   });
+  const [addServiceIndicator, setAddServiceIndicator] = useState(false);
   useEffect(() => {
     const fetchAllProduct = async () => {
       try {
@@ -50,7 +51,7 @@ export const AppDiscoverProvider = ({ children }) => {
     };
 
     fetchAllProduct();
-  }, [searchAllServices, serviceFilter]);
+  }, [searchAllServices, serviceFilter, addServiceIndicator]);
   return (
     <appDiscoverContext.Provider
       value={{
@@ -69,6 +70,8 @@ export const AppDiscoverProvider = ({ children }) => {
         setFilterOptions,
         serviceFilter,
         setServiceFilter,
+        addServiceIndicator,
+        setAddServiceIndicator,
       }}
     >
       {children}

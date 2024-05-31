@@ -38,31 +38,26 @@ const getService = async (req, res) => {
 const createService = async (req, res) => {
   try {
     const {
+      user_id,
       service_name,
       service_description,
       service_category,
       service_price,
-      service_images,
+      service_image,
       service_rating,
       service_creation_date,
     } = req.body;
-    if (
-      !service_name ||
-      !service_category ||
-      !service_price ||
-      !service_creation_date
-    ) {
-      return res.status(400).send({ error: "Missing required fields" });
-    }
+
     await pool.query(
-      `INSERT INTO services (service_name, service_description, service_category, service_price, service_images, service_rating, service_creation_date)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO services (user_id, service_name, service_description, service_category, service_price, service_image, service_rating, service_creation_date)
+      VALUES (? , ?, ?, ?, ?, ?, ?, ?)`,
       [
+        user_id,
         service_name,
         service_description,
         service_category,
         service_price,
-        service_images,
+        service_image,
         service_rating,
         service_creation_date,
       ]
@@ -70,7 +65,7 @@ const createService = async (req, res) => {
     res.status(201).send({ message: "Service has been added" });
   } catch (error) {
     console.error("Error creating service: ", error);
-    res.status(500).send({ error: "Failed to create service" });
+    res.status(500).send({ message: error.message });
   }
 };
 
