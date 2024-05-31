@@ -107,16 +107,16 @@ const notificationOrder = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query(
       `
-  SELECT users.user_id AS service_provider,
-  services.service_id,
-  orders.user_id AS orders_buyer_id,
-  orders.order_date , orders.order_time 
-  , orders.total_price , orders.payment_status,
-  services.service_name
-  FROM users
-  INNER JOIN services ON users.user_id = services.user_id
-  INNER JOIN orders ON services.service_id = orders.service_id
-  WHERE users.user_id = ?;
+      SELECT orders.order_id,users.user_id AS service_provider,
+      services.service_id,
+      orders.user_id AS orders_buyer_id,
+      orders.order_date , orders.order_time 
+      , orders.total_price , orders.payment_status,
+      services.service_name
+      FROM users
+      INNER JOIN services ON users.user_id = services.user_id
+      INNER JOIN orders ON services.service_id = orders.service_id
+      WHERE users.user_id = ?;
     `,
       [id]
     );
