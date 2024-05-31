@@ -15,7 +15,6 @@ const DiscoverHeader = ({ navigation }) => {
       <View style={styles.search}>
         <SearchProductBar setSearchFunction={setSearchAllServices} />
       </View>
-      <Image source={require("../assets/basket.png")} style={styles.img} />
     </View>
   );
 };

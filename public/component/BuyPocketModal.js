@@ -10,9 +10,14 @@ import {
 import { useOrdersContext } from "../contextapi/useOrdersContext";
 import useFetchHook from "../util/useFetchHook";
 import Toast from "react-native-toast-message";
+import ReviewServiceModal from "./ReviewServiceModal";
+import { useState } from "react";
 const BuyPocketModal = () => {
   const { pocketModal, setPocketModal, myOrders, setMyOrders } =
     useOrdersContext();
+
+  const [openReview, setOpenReview] = useState(false);
+
   const handleDeleteOrder = async (id) => {
     const newOrderList = myOrders.filter((item) => item.order_id !== id);
     setMyOrders(newOrderList);
@@ -89,15 +94,27 @@ const BuyPocketModal = () => {
                     </View>
                     <View style={[styles.btn, { backgroundColor: "green" }]}>
                       <Text style={{ color: "white" }}>
-                        {delivery_status === 1 ? "Delivered" : "Pending"}
+                        {delivery_status === 1 && "Delivered"}
+                        {delivery_status === 0 && "Pending"}
+                        {delivery_status === 2 && "Rejected"}
                       </Text>
                     </View>
-                    <TouchableOpacity
-                      onPress={() => handleDeleteOrder(order.order_id)}
-                      style={[styles.btn, { backgroundColor: "red" }]}
-                    >
-                      <Text style={{ color: "white" }}>delete</Text>
-                    </TouchableOpacity>
+                    {delivery_status !== 1 && (
+                      <TouchableOpacity
+                        onPress={() => handleDeleteOrder(order.order_id)}
+                        style={[styles.btn, { backgroundColor: "red" }]}
+                      >
+                        <Text style={{ color: "white" }}>delete</Text>
+                      </TouchableOpacity>
+                    )}
+                    {delivery_status === 1 && (
+                      <TouchableOpacity
+                        onPress={() => setOpenReview(true)}
+                        style={[styles.btn, { backgroundColor: "#B5C0D0" }]}
+                      >
+                        <Text style={{ color: "white" }}>Review</Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
               );
@@ -105,6 +122,10 @@ const BuyPocketModal = () => {
           </ScrollView>
         </View>
       </View>
+      <ReviewServiceModal
+        openReview={openReview}
+        setOpenReview={setOpenReview}
+      />
     </Modal>
   );
 };
@@ -146,7 +167,6 @@ const styles = StyleSheet.create({
   btnContainer: {
     marginTop: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
     gap: 5,
   },
   btn: {

@@ -1,11 +1,22 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../contextapi/useGlobalContext";
 import useFetchHook from "../../util/useFetchHook";
 import RenderSale from "../../component/RenderSale";
+import { useNavigation } from "@react-navigation/native";
+import { useOrdersContext } from "../../contextapi/useOrdersContext";
 const Dashboard = () => {
+  const navigation = useNavigation();
   const [mySales, setMysales] = useState([]);
   const { userInformation } = useGlobalContext();
+  const { setNotificationModal } = useOrdersContext();
   const userId = userInformation.user_id;
   useEffect(() => {
     const getMySales = async () => {
@@ -22,9 +33,27 @@ const Dashboard = () => {
 
     getMySales();
   }, []);
+  const handlePress = () => {
+    setNotificationModal(false);
+    navigation.navigate("home");
+  };
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Dashboard</Text>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+        <TouchableOpacity onPress={handlePress}>
+          <Image
+            style={{
+              width: 30,
+              height: 30,
+              borderWidth: 1,
+              borderRadius: 100,
+              borderColor: "black",
+            }}
+            source={require("../../assets/back.png")}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Dashboard</Text>
+      </View>
       <View style={styles.sales}>
         <Text style={styles.salesText}>You have {mySales.length} sales</Text>
         <ScrollView

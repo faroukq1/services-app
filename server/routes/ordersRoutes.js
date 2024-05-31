@@ -4,6 +4,8 @@ const ordersController = require("../controllers/ordersController");
 
 router.get("/", ordersController.orders);
 router.get("/:id", ordersController.order);
+router.patch("/accept/:id", ordersController.accepteOrder);
+router.patch("/decline/:id", ordersController.declineOrder);
 router.get("/notification/:id", ordersController.notificationOrder);
 router.get("/userorders/:id", ordersController.ordersByUserId);
 router.post("/postorder", ordersController.createOrder);

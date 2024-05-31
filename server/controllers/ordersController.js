@@ -109,7 +109,7 @@ const notificationOrder = async (req, res) => {
       `
       SELECT orders.order_id,users.user_id AS service_provider,
       services.service_id,
-      orders.user_id AS orders_buyer_id,
+      orders.user_id AS orders_buyer_id, orders.delivery_status,
       orders.order_date , orders.order_time 
       , orders.total_price , orders.payment_status,
       services.service_name
@@ -133,6 +133,38 @@ const notificationOrder = async (req, res) => {
   }
 };
 
+const accepteOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      `UPDATE orders SET delivery_status = 1 WHERE order_id = ?;`,
+      [id]
+    );
+    if (response.affectedRows !== 0) {
+      res.status(200).send({ message: "order has been accepted" });
+      return;
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const declineOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      `UPDATE orders SET delivery_status = 2 WHERE order_id = ?;`,
+      [id]
+    );
+    if (response.affectedRows !== 0) {
+      res.status(200).send({ message: "order has been declined" });
+      return;
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 module.exports = {
   orders,
   order,
@@ -140,4 +172,6 @@ module.exports = {
   ordersByUserId,
   deleteOrder,
   notificationOrder,
+  accepteOrder,
+  declineOrder,
 };
