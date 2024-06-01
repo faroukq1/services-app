@@ -142,20 +142,6 @@ const getServicesByCategory = async (req, res) => {
   }
 };
 
-const servicePicture = async (req, res) => {
-  try {
-    const file = req.file.filename;
-    const service_id = req.params.id;
-    const result = await pool.query(
-      "UPDATE services SET service_image=? WHERE service_id=?",
-      [file, service_id]
-    );
-    res.status(200).send({ message: "Service has been updated" });
-  } catch (error) {
-    res.status(500).send({ error: "Failed to update service" });
-  }
-};
-
 const getUserServices = async (req, res) => {
   try {
     const id = req.params.id;
@@ -175,7 +161,6 @@ module.exports = {
   createService,
   deleteService,
   updateService,
-  servicePicture,
   recomendService,
   getServicesByCategory,
   getUserServices,

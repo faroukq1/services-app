@@ -8,7 +8,6 @@ router.get("/user/:id", servicesController.getUserServices);
 router.get("/recomend/highrating", servicesController.recomendService);
 router.get("/category/:category", servicesController.getServicesByCategory);
 router.post("/", servicesController.createService);
-router.post("/upload/:id", servicesController.servicePicture);
 router.delete("/:id", servicesController.deleteService);
 router.patch("/:id", servicesController.updateService);
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProfileSettingEdit from "../../component/ProfileSettingEdit";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -8,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { useGlobalContext } from "../../contextapi/useGlobalContext";
 import useFetchHook from "../../util/useFetchHook";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +17,7 @@ import { useWishListContext } from "../../contextapi/useWishListContext";
 const AccountPage = () => {
   const navigation = useNavigation();
   const [editSetting, setEditSetting] = useState(false);
+  const [photo, setPhoto] = useState(null);
   const { accountDetailsById, userInformation, setAccountDetailsById } =
     useGlobalContext();
   const [accountPageData, setAccountPageData] = useState([]);
@@ -24,6 +27,66 @@ const AccountPage = () => {
     setAccountDetailsById(userInformation.user_id);
     navigation.navigate("home");
   };
+
+  useEffect(() => {
+    (async () => {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission denied",
+          "We need your permission to access your photo library"
+        );
+      }
+    })();
+  }, []);
+
+  const uploadPhoto = async () => {
+    if (photo) {
+      const formData = new FormData();
+      formData.append("avatar", {
+        uri: photo,
+        type: "image/jpeg",
+        name: `photo${Date.now()}.jpg`,
+      });
+
+      try {
+        const response = await useFetchHook.post(
+          `/api/uploadprofile/${userInformation.user_id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        Alert.alert("Upload Success", response.data.message);
+      } catch (error) {
+        console.error("Upload failed", error);
+        Alert.alert(
+          "Upload failed",
+          "An error occurred while uploading the photo"
+        );
+      }
+    } else {
+      Alert.alert("No photo selected", "Please select a photo first");
+    }
+  };
+
+  const selectPhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    setPhoto(result.assets[0].uri);
+    try {
+      await uploadPhoto();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const getAccountDetailsById = async () => {
       try {
@@ -31,6 +94,7 @@ const AccountPage = () => {
           `api/user/${accountDetailsById}`
         );
         const data = response.data.data[0];
+        setPhoto(`../../../server/picture/${data.profile_image}`);
         setAccountPageData(data);
       } catch (error) {
         console.log(error);
@@ -63,7 +127,6 @@ const AccountPage = () => {
         <Text>Loading...</Text>
       </View>
     );
-
   return (
     <>
       {editSetting ? (
@@ -104,10 +167,17 @@ const AccountPage = () => {
             )}
           </View>
           <View style={styles.profileSection}>
-            <Image
-              style={styles.profileImg}
-              source={require("../../assets/avatar.png")}
-            />
+            <TouchableOpacity
+              style={styles.editAvatarBtn}
+              onPress={() => selectPhoto()}
+            >
+              <Image
+                style={styles.editImg}
+                source={require("../../assets/edit.png")}
+              />
+            </TouchableOpacity>
+            <Image style={styles.profileImg} />
+
             <View style={styles.profileDetails}>
               <Text style={{ color: "white", fontWeight: "600", fontSize: 20 }}>
                 {accountPageData.user_name}
@@ -198,6 +268,7 @@ const styles = StyleSheet.create({
     borderColor: "red",
     width: "50%",
     height: "50%",
+    borderRadius: 100,
   },
   profileDetails: {
     marginTop: 20,
@@ -233,6 +304,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0",
     borderRadius: 10,
     textAlign: "center",
+  },
+  editImg: {
+    width: 30,
+    height: 30,
+  },
+  editAvatarBtn: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "white",
+    zIndex: 10,
+    borderRadius: 100,
+    padding: 5,
   },
 });
 

@@ -40,6 +40,7 @@ const deleteUser = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
 module.exports = {
   getUsers,
   getUser,
