@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const multer = require("multer");
 const pool = require("./database");
+const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "picture");
@@ -19,6 +20,7 @@ app.use(
     origin: "http://localhost:5173",
   })
 );
+
 const userRoutes = require("./routes/userRoutes");
 const servicesRoutes = require("./routes/servicesRoutes");
 const ordersRoutes = require("./routes/ordersRoutes");
@@ -33,6 +35,7 @@ app.use("/api/auth", upload.single("avatar"), authentificationRoutes);
 app.use("api/servicesimages", upload.single("images"), servicesImagesRoutes);
 
 // upload picuture section
+app.use("/picture", express.static("picture"));
 
 app.use("/api/uploadprofile/:id", upload.single("avatar"), async (req, res) => {
   try {

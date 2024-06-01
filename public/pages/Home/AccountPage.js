@@ -94,7 +94,6 @@ const AccountPage = () => {
           `api/user/${accountDetailsById}`
         );
         const data = response.data.data[0];
-        setPhoto(`../../../server/picture/${data.profile_image}`);
         setAccountPageData(data);
       } catch (error) {
         console.log(error);
@@ -112,6 +111,9 @@ const AccountPage = () => {
         console.log(error);
       }
     };
+    if (accountPageData.profile_image) {
+      setPhoto("../../assets/picture" + accountPageData.profile_image);
+    }
     getAccountServices();
     getAccountDetailsById();
   }, [accountDetailsById]);
@@ -127,6 +129,7 @@ const AccountPage = () => {
         <Text>Loading...</Text>
       </View>
     );
+  const imageUriPath = `http://192.168.1.7:3000/picture/${accountPageData.profile_image}`;
   return (
     <>
       {editSetting ? (
@@ -176,8 +179,13 @@ const AccountPage = () => {
                 source={require("../../assets/edit.png")}
               />
             </TouchableOpacity>
-            <Image style={styles.profileImg} />
-
+            {/*  profile image */}
+            <Image
+              style={styles.profileImg}
+              source={{
+                uri: imageUriPath,
+              }}
+            />
             <View style={styles.profileDetails}>
               <Text style={{ color: "white", fontWeight: "600", fontSize: 20 }}>
                 {accountPageData.user_name}
