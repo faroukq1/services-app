@@ -38,6 +38,7 @@ const getService = async (req, res) => {
 const createService = async (req, res) => {
   try {
     const {
+      service_id,
       user_id,
       service_name,
       service_description,
@@ -48,10 +49,11 @@ const createService = async (req, res) => {
       service_creation_date,
     } = req.body;
 
-    await pool.query(
-      `INSERT INTO services (user_id, service_name, service_description, service_category, service_price, service_image, service_rating, service_creation_date)
-      VALUES (? , ?, ?, ?, ?, ?, ?, ?)`,
+    const data = await pool.query(
+      `INSERT INTO services (service_id , user_id, service_name, service_description, service_category, service_price, service_image, service_rating, service_creation_date)
+      VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)`,
       [
+        service_id,
         user_id,
         service_name,
         service_description,
@@ -62,7 +64,10 @@ const createService = async (req, res) => {
         service_creation_date,
       ]
     );
-    res.status(201).send({ message: "Service has been added" });
+    res.status(201).send({
+      message: "Service has been added",
+      data: data,
+    });
   } catch (error) {
     console.error("Error creating service: ", error);
     res.status(500).send({ message: error.message });
@@ -155,6 +160,31 @@ const getUserServices = async (req, res) => {
   }
 };
 
+const getMaxServiceId = async (req, res) => {
+  try {
+    const response = await pool.query(
+      "SELECT MAX(service_id) AS max_service_id FROM services"
+    );
+    res.status(200).send(response[0][0]);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const getAllServiceImages = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      "SELECT image_url FROM service_images WHERE service_id=?",
+      [id]
+    );
+    console.log(response[0]);
+    res.status(200).send(response[0]);
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+};
+
 module.exports = {
   getServices,
   getService,
@@ -164,4 +194,6 @@ module.exports = {
   recomendService,
   getServicesByCategory,
   getUserServices,
+  getMaxServiceId,
+  getAllServiceImages,
 };

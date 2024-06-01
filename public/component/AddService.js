@@ -6,19 +6,22 @@ import {
   Image,
   Touchable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextInput } from "react-native-paper";
 import useFetchHook from "../util/useFetchHook";
 import { useGlobalContext } from "../contextapi/useGlobalContext";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import { useDiscoverContext } from "../contextapi/useDiscoverContext";
+import * as ImagePicker from "expo-image-picker";
 
 const AddService = () => {
   const { userInformation } = useGlobalContext();
   const userId = userInformation.user_id;
   const navigation = useNavigation();
+  const [addServiceId, setAddServiceId] = useState("");
   const [serviceData, setServiceData] = useState({
+    service_id: addServiceId + 1,
     user_id: userId,
     service_name: "",
     service_description: "",
@@ -29,6 +32,71 @@ const AddService = () => {
     service_creation_date: new Date().toISOString().substring(0, 10),
   });
   const { addServiceIndicator, setAddServiceIndicator } = useDiscoverContext();
+  const [images, setImages] = useState([]);
+  images.forEach((image) => {
+    console.log(image.uri);
+  });
+  const [uploadMessage, setUploadMessage] = useState("");
+  const uploadImages = async () => {
+    if (images.length === 0) {
+      setUploadMessage("Please select images first.");
+      return;
+    }
+
+    const formData = new FormData();
+    images.forEach((image, index) => {
+      formData.append("photos", {
+        uri: image.uri,
+        name: `photo_${index}.jpg`,
+        type: "image/jpeg",
+      });
+    });
+
+    try {
+      const response = await useFetchHook.post(
+        `/api/uploadserviceimages/${userId}/${addServiceId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setUploadMessage(response.data.message);
+    } catch (error) {
+      console.error(error);
+      setUploadMessage("Upload failed.");
+    }
+  };
+
+  useEffect(() => {
+    const getMaxServiceId = async () => {
+      try {
+        const response = await useFetchHook("/api/services/max/1");
+        setAddServiceId(response.data.max_service_id + 1);
+        setServiceData({
+          ...serviceData,
+          service_id: response.data.max_service_id + 1,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMaxServiceId();
+  }, []);
+
+  const selectImages = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      base64: true,
+    });
+
+    if (!result.canceled) {
+      setImages(result.assets);
+    }
+  };
+
   const handlePostService = async () => {
     try {
       const response = await useFetchHook.post("/api/services/", serviceData);
@@ -38,6 +106,7 @@ const AddService = () => {
           text1: "Service added successful",
         });
       }
+      uploadImages();
       setAddServiceIndicator(!addServiceIndicator);
       navigation.navigate("home");
     } catch (error) {
@@ -52,7 +121,7 @@ const AddService = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>AddService</Text>
-      <TouchableOpacity style={styles.imagePicker}>
+      <TouchableOpacity style={styles.imagePicker} onPress={selectImages}>
         <Image
           style={styles.image}
           source={require("../assets/addservice.png")}

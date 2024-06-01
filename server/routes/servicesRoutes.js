@@ -10,5 +10,7 @@ router.get("/category/:category", servicesController.getServicesByCategory);
 router.post("/", servicesController.createService);
 router.delete("/:id", servicesController.deleteService);
 router.patch("/:id", servicesController.updateService);
+router.get("/max/:id", servicesController.getMaxServiceId);
+router.get("/allimages/:id", servicesController.getAllServiceImages);
 
 module.exports = router;

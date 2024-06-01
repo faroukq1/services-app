@@ -111,9 +111,9 @@ const AccountPage = () => {
         console.log(error);
       }
     };
-    if (accountPageData.profile_image) {
-      setPhoto("../../assets/picture" + accountPageData.profile_image);
-    }
+    setPhoto(
+      `http://192.168.1.7:3000/picture/${accountPageData.profile_image}`
+    );
     getAccountServices();
     getAccountDetailsById();
   }, [accountDetailsById]);
@@ -129,7 +129,6 @@ const AccountPage = () => {
         <Text>Loading...</Text>
       </View>
     );
-  const imageUriPath = `http://192.168.1.7:3000/picture/${accountPageData.profile_image}`;
   return (
     <>
       {editSetting ? (
@@ -183,7 +182,7 @@ const AccountPage = () => {
             <Image
               style={styles.profileImg}
               source={{
-                uri: imageUriPath,
+                uri: photo,
               }}
             />
             <View style={styles.profileDetails}>

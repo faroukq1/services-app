@@ -6,10 +6,26 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useFetchHook from "../util/useFetchHook";
 
-const ServiceGallery = () => {
-  // picture will be passed as a props
+const ServiceGallery = ({ service_id }) => {
+  const [allPicture, setAllPicture] = useState([]);
+  useEffect(() => {
+    const getAllPicture = async () => {
+      try {
+        const response = await useFetchHook(
+          `/api/services/allimages/${service_id}`
+        );
+        const data = response.data;
+        setAllPicture(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllPicture();
+  }, []);
+  console.log(allPicture);
   return (
     <View style={styles.gallery}>
       <View style={styles.header}>
@@ -26,11 +42,14 @@ const ServiceGallery = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.imageContainer}
       >
-        {[1, 2, 3, 4, 5, 6].map((_, i) => {
+        {allPicture.map((item, i) => {
+          const { image_url } = item;
           return (
             <Image
               style={styles.image}
-              source={require("../assets/defaultservicepic.jpg")}
+              source={{
+                uri: `http://192.168.1.7:3000/picture/${image_url}`,
+              }}
               key={i}
             />
           );

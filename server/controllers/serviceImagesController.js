@@ -19,11 +19,7 @@ const getImages = async (req, res) => {
 };
 const getImage = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (isNaN(id) || id <= 0) {
-      res.status(400).send("there is no image match this id");
-      return;
-    }
+    const id = req.params.id;
     const [image] = await pool.query(
       "SELECT * FROM service_images WHERE image_id = ?",
       [id]
@@ -35,6 +31,22 @@ const getImage = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving service image:", error);
     res.status(500).json({ error: "Failed to retrieve service image" });
+  }
+};
+
+const getImagesByServiceId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      "SELECT * FROM service_images WHERE service_id=?",
+      [id]
+    );
+    console.log(response);
+    if (response.status === 200) {
+      res.status(200).send(response[0]);
+    }
+  } catch (error) {
+    res.status(500).send({ message: error });
   }
 };
 
@@ -57,4 +69,5 @@ module.exports = {
   getImages,
   getImage,
   uploadServiceImage,
+  getImagesByServiceId,
 };

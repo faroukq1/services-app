@@ -32,11 +32,11 @@ app.use("/api/user", userRoutes);
 app.use("/api/services", upload.single("service"), servicesRoutes);
 app.use("/api/order", ordersRoutes);
 app.use("/api/auth", upload.single("avatar"), authentificationRoutes);
-app.use("api/servicesimages", upload.single("images"), servicesImagesRoutes);
+app.use("api/servicesimages", servicesImagesRoutes);
 
 // upload picuture section
 app.use("/picture", express.static("picture"));
-
+// apload one picture
 app.use("/api/uploadprofile/:id", upload.single("avatar"), async (req, res) => {
   try {
     const fileName = req.file.filename;
@@ -56,6 +56,62 @@ app.use("/api/uploadprofile/:id", upload.single("avatar"), async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+// upload many pictures
+const uploadFiles = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    checkFileType(file, cb);
+  },
+}).array("photos", 30);
+
+const checkFileType = (file, cb) => {
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb("Error: Images Only!");
+  }
+};
+
+app.post("/api/uploadserviceimages/:id/:serviceid", (req, res) => {
+  const user_id = req.params.id;
+  const service_id = req.params.serviceid;
+  uploadFiles(req, res, async (err) => {
+    if (err) {
+      return res.status(400).send({ message: err });
+    }
+
+    // Check if files exist
+    if (req.files === undefined || req.files.length === 0) {
+      return res.status(400).send({ message: "No file uploaded" });
+    }
+    const servicesImages = req.files;
+    try {
+      const firstImage = servicesImages[0].filename;
+      console.log(firstImage);
+      await pool.query(
+        "UPDATE services SET service_image=? WHERE service_id=?",
+        [firstImage, service_id]
+      );
+      for (let i = 1; i < servicesImages.length; i++) {
+        const image_url = servicesImages[i].filename;
+        await pool.query(
+          "INSERT INTO service_images (service_id , user_id , image_url) VALUES (? , ? , ?)",
+          [service_id, user_id, image_url]
+        );
+      }
+
+      res.status(200).send({ message: "pictures has been aded" });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`app is listing on port : ${port}`);
 });

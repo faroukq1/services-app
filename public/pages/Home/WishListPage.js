@@ -65,13 +65,18 @@ const WishListPage = ({ navigation }) => {
     service_price,
     service_image,
     service_rating,
-    profile_image,
     user_name,
     user_adress,
+    service_id,
   } = serviceData;
   return (
     <View style={styles.container}>
-      <PictureContainer navigation={navigation} />
+      <PictureContainer
+        service_id={service_id}
+        service_image={service_image}
+        service
+        navigation={navigation}
+      />
       <ServiceCategory
         service_category={service_category}
         service_rating={service_rating}
@@ -90,7 +95,7 @@ const WishListPage = ({ navigation }) => {
         />
       )}
 
-      {section.gallery && <ServiceGallery />}
+      {section.gallery && <ServiceGallery service_id={service_id} />}
       {section.reviews && <ServiceReview />}
 
       <View style={styles.buy}>
