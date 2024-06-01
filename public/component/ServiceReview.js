@@ -1,26 +1,77 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import Reviews from "./Reviews";
 import Toast from "react-native-toast-message";
-
+import { useWishListContext } from "../contextapi/useWishListContext";
+import useFetchHook from "../util/useFetchHook";
+import { useGlobalContext } from "../contextapi/useGlobalContext";
 const ServiceReview = () => {
-  const toastError = () => {
-    Toast.show({
-      type: "error",
-      position: "top",
-      text1: "You can't make review before buying the service",
-      visibilityTime: 2500,
-    });
+  const { serviceID, setWriteReview, writeReview } = useWishListContext();
+  const { userInformation } = useGlobalContext();
+  const id = userInformation.user_id;
+  const [reviewData, setReviewData] = useState({
+    user_id: id,
+    service_id: serviceID,
+    review_text: "",
+  });
+  const [allServiceReview, setAllServiceReview] = useState([]);
+  useEffect(() => {
+    const getAllServiceReview = async () => {
+      try {
+        const response = await useFetchHook.get(
+          `/api/order/review/${serviceID}`
+        );
+        const data = response.data;
+        setAllServiceReview(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getAllServiceReview();
+  }, [writeReview]);
+  const handleSubmitReview = async () => {
+    try {
+      const response = await useFetchHook.post("/api/order/review", reviewData);
+      if (response.status === 200) {
+        setWriteReview(false);
+        Toast.show({
+          type: "success",
+          text1: "Review submitted successfully",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>Reviews</Text>
-        <TouchableOpacity onPress={toastError}>
-          <Image source={require("../assets/edit.png")} style={styles.img} />
-        </TouchableOpacity>
+      <View style={styles.reviewContainer}>
+        {writeReview && (
+          <View style={styles.reviews}>
+            <Text style={{ fontWeight: "bold" }}>Your Review</Text>
+            <TextInput
+              onChange={(e) => {
+                setReviewData({
+                  ...reviewData,
+                  review_text: e.nativeEvent.text,
+                });
+              }}
+              placeholder="Write your review here..."
+            />
+            <TouchableOpacity style={styles.btn} onPress={handleSubmitReview}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {!writeReview && <Reviews allServiceReview={allServiceReview} />}
       </View>
-      <Reviews />
     </View>
   );
 };
@@ -28,9 +79,9 @@ const ServiceReview = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   header: {
-    paddingHorizontal: 20,
     paddingVertical: 15,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -42,6 +93,23 @@ const styles = StyleSheet.create({
   img: {
     width: 30,
     height: 30,
+  },
+  reviews: {
+    gap: 10,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: "#B4B4B8",
+    borderRadius: 5,
+  },
+  btn: {
+    padding: 10,
+    backgroundColor: "#B4B4B8",
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  reviewContainer: {
+    gap: 10,
+    paddingTop: 10,
   },
 });
 

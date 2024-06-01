@@ -51,11 +51,21 @@ CREATE TABLE service_images (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    service_id INT,
+    review_text VARCHAR(255),
+    FOREIGN KEY service_id REFERENCES services(service_id),
+    FOREIGN KEY user_id REFERENCES users(user_id)
+);
+
 
 describe users;
 describe services;
 describe orders;
 describe service_images;
+describe reviews;
 
 INSERT INTO users (user_name, email, user_adress, user_password, full_name, profile_image, phone_number,user_rating, credit_card_number) VALUES ('alice_smith', 'alice.smith@example.com', '456 Maple Ave, Somewhere, USA', '$2a$10$8zAti5/l4E5Ati63J6FksuLhR/Nmy6tJW1JnIJ3.FdfLgZKgH1gju', 'Alice Smith', 'profile_image2.jpg', '555-123-4567', 0,'9876543210987654');
 INSERT INTO users (user_name, email, user_adress, user_password, full_name, profile_image, phone_number,user_rating, credit_card_number) VALUES ('michael_johnson', 'michael.johnson@example.com', '789 Oak St, Anotherplace, USA', '$2a$10$vaxC0zRUjGBqPC0jX9aL3e80zr.t78DZ7ayfW9afSkJhE5kVeN3bu', 'Michael Johnson', 'profile_image3.jpg', '999-999-9999', 0,'1234567890123456');

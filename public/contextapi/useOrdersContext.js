@@ -29,7 +29,7 @@ export const OrdersProvider = ({ children }) => {
                 serviceName: allServices[j].service_name,
                 serviceCategory: allServices[j].service_category,
               };
-              orderList.push({ ...item, serviceDetails });
+              orderList.push({ ...item, serviceDetails, service_id });
             }
           }
         }

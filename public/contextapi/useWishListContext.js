@@ -4,6 +4,7 @@ import useFetchHook from "../util/useFetchHook";
 const appWishListContext = createContext();
 export const AppWishListProvider = ({ children }) => {
   const [serviceID, setServiceID] = useState(null);
+  const [writeReview, setWriteReview] = useState(false);
   const [serviceData, setServiceData] = useState({});
   const [orderInfo, setOrderInfo] = useState({
     user_id: "",
@@ -40,6 +41,8 @@ export const AppWishListProvider = ({ children }) => {
         setServiceID,
         orderInfo,
         setOrderInfo,
+        writeReview,
+        setWriteReview,
       }}
     >
       {children}

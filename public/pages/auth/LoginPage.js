@@ -16,7 +16,7 @@ const LoginPage = ({ navigation }) => {
   const { setIsLogin, setUserInformation, setAccountDetailsById } =
     useGlobalContext();
   const [loginResult, setLoginResult] = useState({
-    email: "faroukq1@gmail.com",
+    email: "",
     user_password: "123",
   });
 

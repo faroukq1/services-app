@@ -165,6 +165,36 @@ const declineOrder = async (req, res) => {
   }
 };
 
+const submitReview = async (req, res) => {
+  try {
+    const { user_id, service_id, review_text } = req.body;
+    const response = await pool.query(
+      `INSERT INTO reviews (user_id , service_id, review_text) VALUES (?,?,?)`,
+      [user_id, service_id, review_text]
+    );
+    if (response.affectedRows !== 0) {
+      res.status(200).send({ message: "review has been submitted" });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const getAllReview = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await pool.query(
+      `SELECT * FROM reviews WHERE service_id = ?;`,
+      [id]
+    );
+    if (response.affectedRows !== 0) {
+      res.status(200).send(response[0]);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   orders,
   order,
@@ -174,4 +204,6 @@ module.exports = {
   notificationOrder,
   accepteOrder,
   declineOrder,
+  submitReview,
+  getAllReview,
 };

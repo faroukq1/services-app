@@ -1,31 +1,42 @@
 import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
-import React from "react";
-
-const Review = ({ value }) => {
+import React, { useEffect, useState } from "react";
+import useFetchHook from "../util/useFetchHook";
+const Review = ({ user_id, review_text }) => {
+  console.log(review_text);
+  const [userInfo, setUserInfo] = useState("");
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const response = await useFetchHook.get(`api/user/${user_id}`);
+        const data = response.data.data[0];
+        const { full_name } = data;
+        setUserInfo(full_name);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserInfo();
+  }, []);
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewerDetails}>
         <Image style={styles.img} source={require("../assets/avatar.png")} />
-        <Text style={{ fontWeight: "bold" }}>John Doe</Text>
+        <Text style={{ fontWeight: "bold" }}>{userInfo}</Text>
       </View>
       <View>
-        <Text style={{ color: "#B4B4B8" }}>
-          Exceptional service! Five-star experience from start to finish. Highly
-          recommended. Professional, efficient, and reliable. Will definitely
-          use again. Thank you!
-        </Text>
+        <Text style={{ color: "#B4B4B8" }}>{review_text}</Text>
       </View>
     </View>
   );
 };
-const Reviews = () => {
+const Reviews = ({ allServiceReview }) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}
     >
-      {[1, 2, 3, 4, 5].map((_, i) => {
-        return <Review key={i} />;
+      {allServiceReview.map((item, i) => {
+        return <Review key={i} {...item} />;
       })}
     </ScrollView>
   );
@@ -33,11 +44,11 @@ const Reviews = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
     paddingBottom: 90,
     gap: 10,
   },
   reviewContainer: {
+    width: "100%",
     flex: 1,
     height: 140,
     borderWidth: 1,

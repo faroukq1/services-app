@@ -10,13 +10,13 @@ import {
 import { useOrdersContext } from "../contextapi/useOrdersContext";
 import useFetchHook from "../util/useFetchHook";
 import Toast from "react-native-toast-message";
-import ReviewServiceModal from "./ReviewServiceModal";
-import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useWishListContext } from "../contextapi/useWishListContext";
 const BuyPocketModal = () => {
+  const navigation = useNavigation();
+  const { setServiceID, setWriteReview } = useWishListContext();
   const { pocketModal, setPocketModal, myOrders, setMyOrders } =
     useOrdersContext();
-
-  const [openReview, setOpenReview] = useState(false);
 
   const handleDeleteOrder = async (id) => {
     const newOrderList = myOrders.filter((item) => item.order_id !== id);
@@ -32,6 +32,12 @@ const BuyPocketModal = () => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const handleReview = (service_id) => {
+    setServiceID(service_id);
+    setWriteReview(true);
+    navigation.navigate("wishlist");
   };
   return (
     <Modal visible={pocketModal} transparent={true} animationType="fade">
@@ -109,7 +115,7 @@ const BuyPocketModal = () => {
                     )}
                     {delivery_status === 1 && (
                       <TouchableOpacity
-                        onPress={() => setOpenReview(true)}
+                        onPress={() => handleReview(order.service_id)}
                         style={[styles.btn, { backgroundColor: "#B5C0D0" }]}
                       >
                         <Text style={{ color: "white" }}>Review</Text>
@@ -122,10 +128,6 @@ const BuyPocketModal = () => {
           </ScrollView>
         </View>
       </View>
-      <ReviewServiceModal
-        openReview={openReview}
-        setOpenReview={setOpenReview}
-      />
     </Modal>
   );
 };
